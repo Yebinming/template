@@ -61,13 +61,17 @@
                 </el-option>
               </el-select>
             </el-form-item>
+             </el-col>
+        </el-row>
+           <el-row :gutter="20">
+          <el-col :span="8">
             <el-form-item label="请审核：" prop="status">
               <el-radio-group v-model="status">
                 <el-radio :label="true">通过</el-radio>
                 <el-radio :label="false">不通过</el-radio> </el-radio-group
               >
             </el-form-item>
-          </el-col>
+            </el-col>
         </el-row>
         <el-row>
           <el-col :span="7">
