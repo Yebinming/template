@@ -1,3 +1,3 @@
 # education-admin
 
-教育测评管理后台
+项目管理后台

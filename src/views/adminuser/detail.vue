@@ -22,35 +22,32 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="学校名称：" prop="name">
-              <el-input v-model="subForm.name" placeholder="请输入" />
+            <el-form-item label="标题：" prop="title">
+              <el-input v-model="subForm.title" placeholder="请输入" />
             </el-form-item>
-            <el-form-item label="学校类型：" prop="type">
-              <el-select
-                v-model="subForm.type"
-                placeholder="请选择"
-                style="width: 100%"
+            <el-form-item label="轮播图" prop="img">
+              <el-upload
+                class="avatar-uploader"
+                :action="$api.uploadFileUrl"
+                :show-file-list="false"
+                name="upfile"
+                :on-success="onUploadImgSuccessImg"
               >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
+                <img v-if="subForm.img" :src="subForm.img" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+              <span style="color: #999">建议尺寸：750px*422px</span>
             </el-form-item>
-            <el-form-item label="时间：" prop="createdYear">
-              <el-date-picker
-              style="width:100%"
-                v-model="subForm.createdYear"
-                type="year"
-                placeholder="选择年"
-              >
-              </el-date-picker>
+            <el-form-item label="排序数：" prop="sortNum">
+              <el-input
+                type="number"
+                v-model.number="subForm.sortNum"
+                placeholder="请输入"
+              />
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row>
           <el-col :span="7">
             <el-form-item>
@@ -68,54 +65,33 @@
 </template>
 
 <script>
-import {
-  targetedUpdate,
-  targetedDetail,
-  addTargetedType,
-  addFirstTargeted,
-} from "@/api/api";
+import {traininglogssDetail,
+DisableTrain,
+DnableTrain } from "@/api/api";
 export default {
   data() {
     return {
-      options: [
-        {
-          value: "PRIMARY_SCHOOL",
-          label: "小学",
-        },
-        {
-          value: "JUNIOR_HIGH_SCHOOL",
-          label: "初中",
-        },
-        {
-          value: "SENIOR_HIGH_SCHOOL",
-          label: "高中",
-        },
-        {
-          value: "NINE_YEAR_SCHOOL",
-          label: "九年一贯学校",
-        },
-      ],
       subForm: {
-        name: "",
-        type: "",
-        createdYear: "",
+        title: "",
+        img: "",
+        sortNum: "",
       },
       subRules: {
-        name: [
+        title: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        createdYear: [
+        img: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        type: [
+        sortNum: [
           {
             required: true,
             message: "不能为空",
@@ -127,19 +103,30 @@ export default {
   },
   mounted() {
     if (this.$route.query.id) {
-      targetedDetail({ id: this.$route.query.id }).then((res) => {
+      traininglogssDetail({ id: this.$route.query.id }).then((res) => {
         this.subForm = res.body;
       });
     }
   },
   methods: {
+    onUploadImgSuccessImg(res, file) {
+      this.form.bannerImg = res.body;
+      console.log();
+    },
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          targetedUpdate(this.subForm).then((res) => {
-            this.$message.success("修改成功");
-            this.$router.back();
-          });
+          if (this.subForm.id) {
+            bannersUpdate(this.subForm).then((res) => {
+              this.$message.success("修改成功");
+              this.$router.back();
+            });
+          } else {
+            bannersAdd(this.subForm).then((res) => {
+              this.$message.success("修改成功");
+              this.$router.back();
+            });
+          }
         } else {
           this.$message.warning("请填写内容");
         }

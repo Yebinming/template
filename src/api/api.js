@@ -17,129 +17,96 @@ export function adminuserGet(params) {
         params
     })
 }
-export function schoolList(params) {
+export function traininglogssDelete(params) {
     return request({
-        url: `/admin/school/list`,
+        url: `/admin/traininglogss/delete/${params.id}`,
         method: 'get',
         params
     })
 }
-export function schoolUpdate(params) {
+export function traininglogssDetail(params) {
     return request({
-        url: `/admin/school/update/${params.id}`,
-        method: 'post',
-        params
-    })
-}
-export function schoolDetail(params) {
-    return request({
-        url: `/admin/school/detail/${params.id}`,
+        url: `/admin/traininglogss/detail/${params.id}`,
         method: 'get',
         params
     })
 }
-export function schoolDel(params) {
+export function List(params) {
     return request({
-        url: `/admin/school/del/${params.id}`,
-        method: 'post',
-        params
-    })
-}
-export function authenticationschoolAudit(params) {
-    return request({
-        url: `/admin/authenticationschool/audit/${params.id}`,
-        method: 'post',
-        params
-    })
-}
-export function authenticationschoolDetail(params) {
-    return request({
-        url: `/admin/authenticationschool/detail/${params.id}`,
+        url: `/admin/traininglogss/List`,
         method: 'get',
         params
     })
 }
-export function authenticationschoolList(params) {
+export function DisableTrain(params) {
     return request({
-        url: `/admin/authenticationschool/list`,
+        url: `/admin/traininglogss/disableTrain/${params.id}`,
         method: 'get',
         params
     })
 }
-export function targetedList(params) {
+export function logDetail(params) {
     return request({
-        url: `/admin/targeted/list`,
+        url: `/admin/traininglogss/logDetail/${params.id}`,
         method: 'get',
         params
     })
 }
-export function targetedUpdate(params) {
+export function enableTrain(params) {
     return request({
-        url: `/admin/targeted/update`,
-        method: 'post',
-        params
-    })
-}
-export function targetedDetail(params) {
-    return request({
-        url: `/admin/targeted/detail/${params.id}`,
+        url: `/admin/traininglogss/enableTrain/${params.id}`,
         method: 'get',
         params
     })
 }
-export function targetedDel(params) {
+
+export function getAdminUserList(params) {
     return request({
-        url: `/admin/targeted/del/${params.id}`,
-        method: 'post',
-        params
-    })
-}
-export function addTargetedType(params) {
-    return request({
-        url: `/admin/targeted/addTargetedType`,
-        method: 'post',
-        params
-    })
-}
-export function addFirstTargeted(params) {
-    return request({
-        url: `/admin/targeted/addFirstTargeted`,
-        method: 'post',
-        params
-    })
-}
-export function detailedruleList(params) {
-    return request({
-        url: `/admin/detailedrule/list`,
+        url: `/admin/adminuser/getAdminUserList`,
         method: 'get',
         params
     })
 }
-export function detailedruleUpdate(params) {
+export function getAdminUserUpdate(params) {
     return request({
-        url: `/admin/detailedrule/update/${params.id}`,
+        url: `/admin/adminuser/update`,
         method: 'post',
         params
     })
 }
-export function detailedruleDetail(params) {
+// export function adminuserGet(params) {
+//     return request({
+//         url: `/admin/adminuser/get`,
+//         method: 'get',
+//         params
+//     })
+// }
+export function adminuserDelete(params) {
     return request({
-        url: `/admin/detailedrule/detail/${params.id}`,
+        url: `/admin/adminuser/delete/${params.id}`,
+        method: 'post',
+        params
+    })
+}
+export function getUserList(params) {
+    return request({
+        url: `/admin/user/getUserList`,
         method: 'get',
         params
     })
 }
-export function detailedruleDel(params) {
+export function enable(params) {
     return request({
-        url: `/admin/detailedrule/del/${params.id}`,
+        url: `/admin/user/enable`,
         method: 'post',
         params
     })
 }
-export function detailedruleAdd(params) {
+export function disable(params) {
     return request({
-        url: `/admin/detailedrule/add`,
+        url: `/admin/user/disable`,
         method: 'post',
         params
     })
 }
+

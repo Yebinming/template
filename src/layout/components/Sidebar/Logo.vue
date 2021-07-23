@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '教育测评管理系统',
+      title: '项目管理后台',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }

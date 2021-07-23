@@ -41,7 +41,7 @@ module.exports = {
 			"/api": {
 				//target: 'https://dev.xiaomon.com/api/baoming/',
 				//target: 'https://wxapp.authine.com/api/aozhe/',
-				target: 'https://dev.xiaomon.com/api/education/',
+				target: 'https://dev.xiaomon.com/api/plates/',
 				ws: true,
 				changeOrigin: true,
 				pathRewrite: {

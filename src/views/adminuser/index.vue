@@ -1,36 +1,6 @@
 <template>
   <div class="app-container">
-    <!-- <el-header>
-      <div class="topright flex flex-x-end">
-        <el-button
-          type="primary"
-          style="width: 114px"
-          @click="$router.push({ path: 'detail'})"
-        >
-          添加
-        </el-button>
-      </div>
-    </el-header> -->
-    <!-- <el-header>
-      <div class="search">
-        <span class="font">学校名称：</span>
-        <el-input
-          placeholder="请输入内容"
-          v-model="page.name"
-          style="width: 150px"
-          size="mini"
-          clearable
-        >
-        </el-input>
-        <el-button
-          class="btns"
-          size="mini"
-          type="primary"
-          @click="fetchData('act')"
-          >搜索</el-button
-        >
-      </div>
-    </el-header> -->
+
     <el-table
       :data="list"
       element-loading-text="Loading"
@@ -45,40 +15,19 @@
         width="80"
       >
       </el-table-column>
-      <el-table-column label="名称">
+      <el-table-column label="标题">
         <template slot-scope="scope">
-          {{ scope.row.authenticationName }}
+          {{ scope.row.latitude }}
         </template>
       </el-table-column>
-      <el-table-column label="手机号">
+
+      <el-table-column label="图片">
         <template slot-scope="scope">
-          {{ scope.row.authenticationPhone }}
+          {{ scope.row.longitude }}
         </template>
       </el-table-column>
-      <el-table-column label="职称">
-        <template slot-scope="scope">
-          {{ scope.row.authenticationSchoolName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="所属学校">
-        <template slot-scope="scope">
-          {{ scope.row.authenticationTitle }}
-        </template>
-      </el-table-column>
-      <el-table-column label="审核状态">
-        <template slot-scope="scope">
-          {{ scope.row.authenticationStatus=='NOAUDIT'
-          ? '未审核'
-          :scope.row.authenticationStatus=='AUDIT'
-          ?'审核中'
-          :scope.row.authenticationStatus=='FIAL'
-          ?'审核不通过'
-          :scope.row.authenticationStatus=='SUCCESS'
-          ?'审核成功'
-          :'审核完成'
-          }}
-        </template>
-      </el-table-column>
+ 
+
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <el-button
@@ -87,15 +36,25 @@
             type="primary"
             @click="
               $router.push({
-                path: '/authentication/detail',
+                path: '/detail',
                 query: {
                   id: scope.row.id,
                 },
               })
             "
           >
-            去审核
+            修改
           </el-button>
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="不用了"
+            title="确定删除吗？"
+            @onConfirm="onDelete(scope.row.id)"
+          >
+            <el-button slot="reference" size="small" type="danger">
+              删除
+            </el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -112,14 +71,16 @@
 </template>
 
 <script>
-import {
-  authenticationschoolList,
-} from "@/api/api";
+import { mapGetters } from "vuex";
+import { traininglogssDelete,
+List,
+ } from "@/api/api";
 export default {
   data() {
     return {
       list: [],
       page: {
+        userId:'',
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
@@ -128,6 +89,9 @@ export default {
   },
   created() {
     this.fetchData();
+  },
+  computed: {
+    ...mapGetters(["id"]),
   },
   methods: {
     handleCurrentChange(val) {
@@ -138,13 +102,14 @@ export default {
       return index + 1 + this.page.pageNum * this.page.pageSize;
     },
     onDelete(id) {
-      schoolDel({ id }).then((res) => {
+      traininglogssDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
     },
     fetchData() {
-      authenticationschoolList(this.page).then((res) => {
+      this.page.userId=this.id
+      List(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
       });

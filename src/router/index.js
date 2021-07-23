@@ -60,77 +60,76 @@ export const constantRoutes = [
 ]
 export const asyncRouterMap = [
   {
-    path:'/scoringSystem',
+    path:'/traininglogss',
     component: Layout,
-    redirect: '/scoringSystem/index',
+    redirect: '/traininglogss/index',
     children:[
       {
         path:'index',
-        component:()=>import('@/views/scoringSystem/index'),
-        meta: { title: '学校管理', icon: 'home' },
+        component:()=>import('@/views/traininglogss/index'),
+        meta: { title: '训练模式日志', icon: 'home' },
       },
       {
         path:'/detail',
-        component:()=>import('@/views/scoringSystem/detail'),
+        component:()=>import('@/views/traininglogss/detail'),
         meta: { title: '详情', icon: 'home' },
         hidden: true
       },
     ]
   },
   {
-    path:'/authentication',
+    path:'/adminuser',
     component: Layout,
-    redirect: '/authentication/index',
+    redirect: '/adminuser/index',
     children:[
       {
         path:'index',
-        component:()=>import('@/views/authentication/index'),
-        meta: { title: '认证资料管理', icon: 'home' },
+        component:()=>import('@/views/adminuser/index'),
+        meta: { title: 'app账号管理', icon: 'home' },
       },
       {
-        path:'/authentication/detail',
-        component:()=>import('@/views/authentication/detail'),
+        path:'/detail',
+        component:()=>import('@/views/adminuser/detail'),
         meta: { title: '详情', icon: 'home' },
         hidden: true
       },
     ]
   },
   {
-    path:'/detailedrule',
+    path:'/curriculum',
     component: Layout,
-    redirect: '/detailedrule/index',
+    redirect: '/curriculum/commonly',
+    meta: {
+      title: '课程管理', icon: 'perm', 
+    },
     children:[
       {
-        path:'index',
-        component:()=>import('@/views/detailedrule/index'),
-        meta: { title: '细则管理', icon: 'home' },
+        path:'commonly',
+        component:()=>import('@/views/curriculum/commonly/index'),
+        meta: { title: '统一课表', icon: 'perm' },
       },
       {
-        path:'/authentication/detail',
-        component:()=>import('@/views/detailedrule/detail'),
-        meta: { title: '详情', icon: 'home' },
+        path:'commonly/detail',
+        component:()=>import('@/views/curriculum/commonly/detail'),
+        meta: { title: '详情', icon: 'perm' },
+        hidden: true
+      },
+      {
+        path:'special',
+        component:()=>import('@/views/curriculum/special/index'),
+        meta: { title: '特殊课表', icon: 'perm' },
+      },
+      {
+        path:'special/detail',
+        component:()=>import('@/views/curriculum/special/detail'),
+        meta: { title: '详情', icon: 'perm' },
         hidden: true
       },
     ]
   },
-  {
-    path:'/targeted',
-    component: Layout,
-    redirect: '/targeted/index',
-    children:[
-      {
-        path:'index',
-        component:()=>import('@/views/targeted/index'),
-        meta: { title: '评分细则管理', icon: 'home' },
-      },
-      {
-        path:'targeted/detail',
-        component:()=>import('@/views/targeted/detail'),
-        meta: { title: '详情', icon: 'home' },
-        hidden: true
-      },
-    ]
-  },
+
+
+  
   {
     path: '/permission',
     component: Layout,
@@ -161,6 +160,7 @@ export const asyncRouterMap = [
         meta: { title: '角色详情' },
         hidden: true
       },
+ 
     ]
   },
 

@@ -1,32 +1,6 @@
 <template>
   <div class="app-container">
-        <!-- <el-header>
-      <div class="topright flex flex-x-end">
-        <el-button
-          type="primary"
-          style="width: 114px"
-          @click="$router.push({ path: 'detail'})"
-        >
-          添加
-        </el-button>
-      </div>
-    </el-header> -->
-      <el-header>
-      <div class="search">
-        <span class="font">学校名称：</span>
-         <el-input
-          placeholder="请输入内容"
-          v-model="page.name"
-          style="width: 150px"
-          size="mini"
-          clearable
-        >
-        </el-input>
-        <el-button class="btns" size='mini' type="primary" @click="fetchData('act')"
-          >搜索</el-button
-        >
-      </div>
-    </el-header>
+
     <el-table
       :data="list"
       element-loading-text="Loading"
@@ -34,56 +8,38 @@
       fit
       highlight-current-row
     >
- <el-table-column
+      <el-table-column
         label="序号"
         type="index"
         :index="indexMethod"
         width="80"
       >
       </el-table-column>
-      <el-table-column label="负责人姓名">
+        <el-table-column label="地址">
         <template slot-scope="scope">
-          {{ scope.row.principalName }}
+          {{ scope.row.addresses }}
         </template>
       </el-table-column>
-      <el-table-column label="负责人电话">
+      <el-table-column label="登录时间">
         <template slot-scope="scope">
-          {{ scope.row.principalPhone }}
+          {{scope.row.loginTime | parseTime('{y}-{m}-{d} {h}:{i}')  }}
         </template>
       </el-table-column>
-      <el-table-column label="学校人数">
+      <el-table-column label="登出时间">
         <template slot-scope="scope">
-          {{ scope.row.studentsNumber }}
+          {{scope.row.logoutTime | parseTime('{y}-{m}-{d} {h}:{i}')  }}
         </template>
       </el-table-column>
-      <el-table-column label="教师人数">
+    <el-table-column label="启用状态">
         <template slot-scope="scope">
-          {{ scope.row.teacherNumber }}
+          <el-switch
+            :value="scope.row.status == 'ENABLED'"
+            active-color="#13ce66"
+            @change="onChange($event, scope.row.id)"
+          >
+          </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="学校类型" >
-        <template slot-scope="scope">
-          {{ scope.row.type=='PRIMARY_SCHOOL'
-          ?'小学'
-          :scope.row.type=='JUNIOR_HIGH_SCHOOL'
-          ? '初中'
-          :scope.row.type=='SENIOR_HIGH_SCHOOL'
-          ?'高中'
-          :'九年一贯学校'
-          }}
-        </template>
-      </el-table-column>
-      <el-table-column label="学校名称">
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column label="学校简介">
-        <template slot-scope="scope">
-          {{ scope.row.introduce }}
-        </template>
-      </el-table-column>
-
 
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
@@ -92,9 +48,12 @@
             class="mr20 mb10"
             type="primary"
             @click="
-              $router.push({ path: '/detail', query: { 
-                id: scope.row.id,
-                 } })
+              $router.push({
+                path: '/detail',
+                query: {
+                  id: scope.row.id,
+                },
+              })
             "
           >
             修改
@@ -111,6 +70,7 @@
           </el-popconfirm>
         </template>
       </el-table-column>
+
     </el-table>
     <div class="mt20 flex flex-x-center">
       <el-pagination
@@ -125,41 +85,56 @@
 </template>
 
 <script>
-import { schoolList,
-schoolUpdate,
-schoolDetail,
-schoolDel} from '@/api/api';
+import { mapGetters } from "vuex";
+import { traininglogssDelete,
+List,
+DisableTrain,
+enableTrain
+ } from "@/api/api";
 export default {
   data() {
     return {
       list: [],
       page: {
+        userId:'',
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
-        name:''
       },
     };
   },
   created() {
     this.fetchData();
   },
+  computed: {
+    ...mapGetters(["id"]),
+  },
   methods: {
     handleCurrentChange(val) {
       this.page.pageNum = --val;
-         this.fetchData();
+      this.fetchData();
     },
- indexMethod(index) {
+        onChange(val, id) {
+      val
+        ? enableTrain({ id }).then((res) => {
+            this.fetchData();
+          })
+        : DisableTrain({ id }).then((res) => {
+            this.fetchData();
+          });
+    },
+    indexMethod(index) {
       return index + 1 + this.page.pageNum * this.page.pageSize;
     },
     onDelete(id) {
-      schoolDel({ id }).then((res) => {
+      traininglogssDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
     },
     fetchData() {
-      schoolList(this.page).then((res) => {
+      this.page.userId=this.id
+      List(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
       });
@@ -176,10 +151,10 @@ export default {
   display: flex;
   align-items: center;
 }
-.font{
+.font {
   font-size: 14px;
 }
 .btns {
- margin-left: 20px;
+  margin-left: 20px;
 }
 </style>

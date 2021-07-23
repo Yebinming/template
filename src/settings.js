@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '教育测评管理系统',
+  title: '项目管理后台',
 
   /**
    * @type {boolean} true | false
