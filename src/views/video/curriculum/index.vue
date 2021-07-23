@@ -54,7 +54,7 @@
       </el-table-column>
       <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.type=='VIDEO'?'视频':'广告' }}
+          {{ scope.row.type=='VIDEO'?'课程':'广告' }}
         </template>
       </el-table-column>
     
@@ -89,9 +89,11 @@
 </template>
 
 <script>
-import {timetableuniformsCreate,
-timetableuniformsDelete,
-timetableuniformsUpdate } from '@/api/api';
+import {videosCreate,
+videosDelete,
+videosDetail,
+videosList,
+videosUpdate } from '@/api/api';
 export default {
   data() {
     return {
@@ -114,7 +116,7 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      timetableuniformsDelete({ id }).then((res) => {
+      videosDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });

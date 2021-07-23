@@ -127,6 +127,38 @@ export const asyncRouterMap = [
       },
     ]
   },
+  {
+    path:'/video',
+    component: Layout,
+    redirect: '/video/commonly',
+    meta: {
+      title: '视频管理', icon: 'perm', 
+    },
+    children:[
+      {
+        path:'curriculum',
+        component:()=>import('@/views/video/curriculum/index'),
+        meta: { title: '课程视频', icon: 'perm' },
+      },
+      {
+        path:'curriculum/detail',
+        component:()=>import('@/views/video/curriculum/detail'),
+        meta: { title: '详情', icon: 'perm' },
+        hidden: true
+      },
+      {
+        path:'advertisement',
+        component:()=>import('@/views/video/advertisement/index'),
+        meta: { title: '广告视频', icon: 'perm' },
+      },
+      {
+        path:'advertisement/detail',
+        component:()=>import('@/views/video/advertisement/detail'),
+        meta: { title: '详情', icon: 'perm' },
+        hidden: true
+      },
+    ]
+  },
 
 
   

@@ -29,24 +29,11 @@ export function timeAgo(time) {
   }
 }
 
-export function trueOrFalse(val) {
-  return val ? '是' : '否'
-}
+
 export function type(val) {
-  return val == 'INDUSTRY' ? '行业' : '领域'
+  return val == 'VIDEO' ? '视频' : '广告'
 }
-export function recommendStatus(val) {
-  return val == 'HAVE_MIND' ? '有意向' : val == 'SUCCESS' ? '已成交' : '失败'
-}
-export function status(val) {
-  return JSON.parse(val) ? '线上' : '线下'
-}
-export function types(val) {
-  return  val == '0' ? '行业类型' : '产品类型'
-}
-export function lable(val) {
-  return  val == '0' ? '首页' : '活动'
-}
+
 
 /**
  * Number formatting

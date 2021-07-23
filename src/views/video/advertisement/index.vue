@@ -89,9 +89,11 @@
 </template>
 
 <script>
-import {timetableuniformsCreate,
-timetableuniformsDelete,
-timetableuniformsUpdate } from '@/api/api';
+import {videosCreate,
+videosDelete,
+videosDetail,
+videosList,
+videosUpdate } from '@/api/api';
 export default {
   data() {
     return {
@@ -101,7 +103,7 @@ export default {
         pageNum: 0,
         pageSize: 50,
         totalCount: 0,
-        type:'VIDEO'
+        type:'ADVERT'
       },
     };
   },
@@ -114,7 +116,7 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      timetableuniformsDelete({ id }).then((res) => {
+      videosDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });

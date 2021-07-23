@@ -87,16 +87,16 @@
 <script>
 import { mapGetters } from "vuex";
 import { traininglogssDelete,
-List,
-DisableTrain,
-enableTrain
+traininglogssList,
+traininglogssDisableTrain,
+traininglogssEnableTrain
  } from "@/api/api";
 export default {
   data() {
     return {
       list: [],
       page: {
-        userId:'',
+        userId:'114',
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
@@ -116,10 +116,10 @@ export default {
     },
         onChange(val, id) {
       val
-        ? enableTrain({ id }).then((res) => {
+        ? traininglogssEnableTrain({ id }).then((res) => {
             this.fetchData();
           })
-        : DisableTrain({ id }).then((res) => {
+        : traininglogssDisableTrain({ id }).then((res) => {
             this.fetchData();
           });
     },
@@ -133,10 +133,10 @@ export default {
       });
     },
     fetchData() {
-      this.page.userId=this.id
-      List(this.page).then((res) => {
+      // this.page.userId=this.id
+      traininglogssList(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
-        this.list = res.body.rows;
+        this.list = res.body;
       });
     },
   },
