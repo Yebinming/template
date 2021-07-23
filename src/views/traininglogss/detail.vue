@@ -92,7 +92,7 @@ export default {
   mounted() {
     if (this.$route.query.id) {
       logDetail({ pid: this.$route.query.id }).then((res) => {
-        this.subForm = res.body;
+        // this.subForm = res.body;
       });
     }
   },

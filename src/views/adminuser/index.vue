@@ -73,7 +73,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { traininglogssDelete,
-List,
+adminuserGetAdminUserList,
  } from "@/api/api";
 export default {
   data() {
@@ -109,7 +109,7 @@ export default {
     },
     fetchData() {
       this.page.userId=this.id
-      List(this.page).then((res) => {
+      adminuserGetAdminUserList(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
       });
