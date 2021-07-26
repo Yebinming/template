@@ -1,10 +1,25 @@
 <template>
   <div class="app-container">
-    <el-header>
-      <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+    <el-header style="padding:0">
+      <div class="topright flex  display">
+        <div
+          class="topright flex"
+          style="cursor: pointer; display: flex; align-items: center"
+        >
+          <img
+            @click="$router.back()"
+            src="../../../assets/img/backs.png"
+            alt=""
+          />
+          <span @click="$router.back()" style="line-height: 1px">返回</span>
+        </div>
+        <!-- <el-button
+          type="primary"
+          style="width: 114px"
+          @click="$router.push({ path: '/curriculum/commonly/detail'  })"
+        >
           添加
-        </el-button>
+        </el-button> -->
       </div>
     </el-header>
    
@@ -34,9 +49,29 @@
     
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { pid: scope.row.id } })">
-             查看
+    
+            <el-button
+            type="primary"
+            size="small"
+            @click="
+              $router.push({
+                path: '/curriculum/commonly/detail',
+                query: {id:scope.row.id }
+              })
+            "
+          >
+            修改
           </el-button>
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="不用了"
+            title="确定删除吗？"
+            @onConfirm="onDelete(scope.row.id)"
+          >
+            <el-button slot="reference" class="ml10" size="small" type="danger">
+              删除
+            </el-button>
+          </el-popconfirm>
           <!-- <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="不用了"
@@ -64,7 +99,8 @@
 
 <script>
 import {
-timetablespecialsDelete,getTimetableUnispecialsList,librarysLists} from '@/api/api';
+timetableuniformsDelete,
+getTimetable,} from '@/api/api';
 export default {
   data() {
     return {
@@ -72,14 +108,14 @@ export default {
       list: [],
       page: {
         pageNum: 0,
-        pageSize: 10,
+        pageSize: 50,
         totalCount: 0,
+        pid:this.$route.query.pid
       },
     };
   },
   created() {
     this.fetchData();
-   
   },
   methods: {
        handleCurrentChange(val) {
@@ -87,7 +123,7 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      timetablespecialsDelete({ id }).then((res) => {
+      timetableuniformsDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
@@ -95,7 +131,7 @@ export default {
  
     fetchData() {
       this.listLoading = true;
-      getTimetableUnispecialsList(this.page).then((res) => {
+      getTimetable(this.page).then((res) => {
         this.listLoading = false;
         this.list = res.body.rows;
       });
@@ -104,3 +140,10 @@ export default {
 
 };
 </script>
+<style>
+.display{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+</style>

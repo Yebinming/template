@@ -109,6 +109,12 @@ export const asyncRouterMap = [
         meta: { title: '统一课表', icon: 'perm' },
       },
       {
+        path:'commonly/list',
+        component:()=>import('@/views/curriculum/commonly/list'),
+        meta: { title: '新增', icon: 'perm' },
+        hidden: true
+      },
+      {
         path:'commonly/detail',
         component:()=>import('@/views/curriculum/commonly/detail'),
         meta: { title: '详情', icon: 'perm' },
@@ -118,6 +124,12 @@ export const asyncRouterMap = [
         path:'special',
         component:()=>import('@/views/curriculum/special/index'),
         meta: { title: '特殊课表', icon: 'perm' },
+      },
+      {
+        path:'special/list',
+        component:()=>import('@/views/curriculum/special/list'),
+        meta: { title: '新增', icon: 'perm' },
+        hidden: true
       },
       {
         path:'special/detail',

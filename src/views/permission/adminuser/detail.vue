@@ -10,6 +10,18 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" :placeholder="placeholder" />
       </el-form-item>
+       <el-form-item label="头像" prop="headerImg">
+            <el-upload
+              class="avatar-uploader"
+              :action="$api.uploadFileUrl"
+              :show-file-list="false"
+              name="upfile"
+              :on-success="onUploadImgSuccesTopImg"
+            >
+              <img v-if="form.headerImg" :src="form.headerImg" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
+            </el-upload>
+          </el-form-item>
       <el-form-item label="角色" prop="role[0].code">
         <el-select v-model="form.role[0].code" placeholder="请选择">
           <el-option
@@ -57,8 +69,8 @@ export default {
       defaultForm: {},
       list: [],
       form: {
+        headerImg:'',
         role: [{ code: "", }],
-         schoolId: ""
       },
       page: {
         page: 0,
@@ -67,6 +79,13 @@ export default {
       },
       placeholder: this.$route.query.id ? "●●●●●●" : "请输入密码",
       rules: {
+        headerImg: [
+          {
+            required: true,
+            message: "上传头像",
+            trigger: ["blur", "change"],
+          },
+        ],
         userName: [
           {
             required: true,
@@ -92,7 +111,6 @@ export default {
         //   },
         // ],
       },
-      schoolList: []
     };
   },
   mounted() {
@@ -116,7 +134,10 @@ export default {
         this.list = res.body.rows;
       });
     },
-
+    onUploadImgSuccesTopImg(res, file) {
+      this.form.headerImg = res.body;
+      console.log(res.body);
+    },
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -144,3 +165,10 @@ export default {
   },
 };
 </script>
+<style>
+.avatar{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+</style>

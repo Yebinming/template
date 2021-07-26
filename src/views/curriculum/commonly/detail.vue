@@ -22,14 +22,30 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="标题：" prop="title">
-              <el-input v-model="subForm.title" placeholder="请输入" />
+            <el-form-item label="视频：" prop="videoId"  >
+              <el-select style="width:334px" v-model="subForm.videoId">
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.videoName"
+                :value="item.id">
+              </el-option>
+            </el-select>
             </el-form-item>
       
-            <el-form-item label="排序数：" prop="sortNum">
+            <el-form-item label="设点时间：" prop="settingTime">
+                <el-date-picker
+                 value-format="timestamp"
+                  style="width:334px"
+                v-model="subForm.settingTime"
+                type="datetime"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+           <el-form-item label="简介：" prop="synopsis">
               <el-input
-                type="number"
-                v-model.number="subForm.sortNum"
+                  style="width:334px"
+                v-model="subForm.synopsis"
                 placeholder="请输入"
               />
             </el-form-item>
@@ -40,7 +56,9 @@
           <el-col :span="7">
             <el-form-item>
               <div class="fr">
-                <el-button class="fr" type="primary" @click="onBit('regsForm')">
+           <el-button @click="$router.back()"> 取消 </el-button>
+
+                <el-button type="primary" @click="onBit('regsForm')">
                   提交
                 </el-button>
               </div>
@@ -53,33 +71,38 @@
 </template>
 
 <script>
-import {logDetail,
-
+import {   
+timetableuniformsCreate,
+timetableuniformsUpdate,
+videosLists,
+timetableuniformsGet
  } from "@/api/api";
 export default {
   data() {
     return {
       subForm: {
-        title: "",
-        img: "",
-        sortNum: "",
+        settingTime: this.$route.query.settingTime,
+        videoId: "",
+        synopsis:'',
+        id: this.$route.query.id
       },
+      options:[],
       subRules: {
-        title: [
+        settingTime: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        img: [
+        videoId: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        sortNum: [
+        synopsis: [
           {
             required: true,
             message: "不能为空",
@@ -90,11 +113,17 @@ export default {
     };
   },
   mounted() {
-    if (this.$route.query.id) {
-      logDetail({ pid: this.$route.query.id }).then((res) => {
-        // this.subForm = res.body;
+      videosLists().then((res) => {
+        this.options = res.body;
+      });
+       if (this.$route.query.id) {
+      timetableuniformsGet({ id: this.$route.query.id }).then((res) => {
+        this.subForm.settingTime = res.body.settingTime;
+        this.subForm.videoId = res.body.videoId;
+        this.subForm.synopsis = res.body.synopsis;
       });
     }
+    
   },
   methods: {
     onUploadImgSuccessImg(res, file) {
@@ -104,13 +133,13 @@ export default {
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.subForm.id) {
-            bannersUpdate(this.subForm).then((res) => {
+          if (this.$route.query.id) {
+            timetableuniformsUpdate(this.subForm).then((res) => {
               this.$message.success("修改成功");
               this.$router.back();
             });
           } else {
-            bannersAdd(this.subForm).then((res) => {
+            timetableuniformsCreate(this.subForm).then((res) => {
               this.$message.success("修改成功");
               this.$router.back();
             });
@@ -124,8 +153,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .right_cont {
   margin-top: 50px;
+}
+.fr{
+  width: 500px;
 }
 </style>
