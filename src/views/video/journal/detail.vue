@@ -29,7 +29,8 @@
       <el-table-column label="修改日志记录" class="row">
         <template slot-scope="scope">
           {{ scope.row.log}}
-        </template>444
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="用户头像">
         <template slot-scope="scope">
           <el-image 
