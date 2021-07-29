@@ -60,20 +60,19 @@ export const constantRoutes = [
 ]
 export const asyncRouterMap = [
   {
-    path:'/traininglogss',
+    path:'/loginLog',
     component: Layout,
-    redirect: '/traininglogss/index',
+    redirect: '/loginLog/index',
     children:[
       {
         path:'index',
-        component:()=>import('@/views/traininglogss/index'),
-        meta: { title: '训练模式日志', icon: 'home' },
-        hidden: true
+        component:()=>import('@/views/loginLog/index'),
+        meta: { title: '登录日志', icon: 'el-icon-s-flag' },
       },
       {
-        path:'/detail',
-        component:()=>import('@/views/traininglogss/detail'),
-        meta: { title: '详情', icon: 'home' },
+        path:'loginLog/detail',
+        component:()=>import('@/views/loginLog/detail'),
+        meta: { title: '详情', icon: 'el-icon-s-flag' },
         hidden: true
       },
     ]

@@ -13,7 +13,7 @@
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="备注">
+      <el-table-column label="修改日志" class="row">
         <template slot-scope="scope">
           {{ scope.row.log }}
         </template>
@@ -119,3 +119,13 @@ export default {
   },
 };
 </script>
+<style >
+.cell{
+    display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+</style>

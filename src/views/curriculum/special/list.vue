@@ -36,31 +36,31 @@
       </el-table-column>
       <el-table-column label="视频名称">
         <template slot-scope="scope">
-          {{!!scope.row.video? scope.row.video.videoName:'视频被删除了' }}
+          {{ scope.row.video.videoName }}
         </template>
       </el-table-column>
       <el-table-column label="视频链接">
         <template slot-scope="scope">
-          <span v-if="!!!scope.row.video">视频被删除了</span>
-        <span v-else style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
+          <!-- <span v-if="!!!scope.row.video">视频被删除了</span> -->
+        <span  style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
         </template>
       </el-table-column>
       <el-table-column label="简介">
         <template slot-scope="scope">
-          {{!!scope.row.video? scope.row.video.introduction:'视频被删除了' }}
+          {{ scope.row.video.introduction }}
         </template>
       </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
-          {{!!scope.row.video? scope.row.video.remarks:'视频被删除了' }}
+          {{ scope.row.video.remarks }}
         </template>
       </el-table-column>
-      <!-- 
+      
       <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.type == "VIDEO" ? "视频" : "广告" }}
+          {{ scope.row.video.type == "VIDEO" ? "视频":scope.row.video.type== "ADVERT"? "广告":'' }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
@@ -144,7 +144,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .display{
     display: flex;
     align-items: center;

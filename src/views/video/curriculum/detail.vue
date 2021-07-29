@@ -20,7 +20,7 @@
         :rules="subRules"
         label-width="180px"
       >
-        <el-row :gutter="30">
+        <el-row >
           <el-col :span="7">
             <el-form-item label="请上传视频：">
               <el-upload

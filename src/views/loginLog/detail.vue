@@ -7,7 +7,7 @@
         >
           <img
             @click="$router.back()"
-            src="../../../assets/img/backs.png"
+            src="../../assets/img/backs.png"
             alt=""
           />
           <span @click="$router.back()" style="line-height: 1px">返回</span>
@@ -21,30 +21,33 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="创建时间">
+       <el-table-column label="用户名" class="row">
         <template slot-scope="scope">
-          {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+          {{ scope.row.user.userName}}
         </template>
       </el-table-column>
-      <el-table-column label="修改日志" class="row">
+      <el-table-column label="登录时间">
         <template slot-scope="scope">
-          {{ scope.row.log}}
+          {{ scope.row.loginTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="用户头像">
+      <el-table-column label="登出时间">
         <template slot-scope="scope">
-          <el-image 
-            style="width: 100px; height: 100px"
-            :src="scope.row.adminUser.headerImg" 
-            :preview-src-list="[scope.row.adminUser.headerImg]">
-          </el-image>
+          <span v-if="!!!scope.row.logoutTime">在线~~</span>
+          <span v-else>{{ scope.row.logoutTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+   <el-table-column label="登录地址" class="row">
+        <template slot-scope="scope">
+          {{ scope.row.addresses}}
+        </template>
+      </el-table-column>
+  
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    size="small"  @click="onDia(scope.row.id)">
+          <!-- <el-button    size="small"  @click="onDia(scope.row.id)">
              查看
-          </el-button>
+          </el-button> -->
           <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="不用了"
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import {videologssGetVideoLogsList,videologssDetail,videologssDelete,getVideoLogsPid} from '@/api/api';
+import {loginlogssListPid,loginlogssDelete} from '@/api/api';
 export default {
   data() {
     return {
@@ -107,7 +110,7 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      videologssDelete({ id }).then((res) => {
+      loginlogssDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
@@ -127,7 +130,7 @@ export default {
  
     fetchData() {
       this.listLoading = true;
-      getVideoLogsPid(this.page).then((res) => {
+      loginlogssListPid(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
@@ -142,3 +145,11 @@ export default {
 
 };
 </script>
+<style>
+ .el-header {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

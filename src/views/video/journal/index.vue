@@ -14,17 +14,26 @@
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="备注">
+      <el-table-column label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.log }}
+          {{ scope.row.adminUser.userName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户头像">
+        <template slot-scope="scope">
+          <el-image 
+            style="width: 100px; height: 100px"
+            :src="scope.row.adminUser.headerImg" 
+            :preview-src-list="[scope.row.adminUser.headerImg]">
+          </el-image>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    size="small" @click="onDia( scope.row.id)">
+          <el-button    size="small"  @click="$router.push({ path:$route.path + '/detail', query: { id: scope.row.id } })">
              查看
           </el-button>
-          <el-popconfirm
+          <!-- <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="不用了"
             title="确定删除吗？"
@@ -33,7 +42,7 @@
             <el-button slot="reference" class="ml10" size="small" type="danger">
               删除
             </el-button>
-          </el-popconfirm>
+          </el-popconfirm> -->
         </template>
       </el-table-column>
     </el-table>
@@ -97,12 +106,7 @@ export default {
     //  console.log(obj);
         return obj;
     },
-    onDia(id){
-      this.dialogVisible = true
-      videologssDetail({id}).then(res=>{
-        this.log=res.body.log
-      })
-    },
+ 
     fetchData() {
       this.listLoading = true;
       videologssGetVideoLogsList(this.page).then((res) => {

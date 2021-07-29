@@ -71,6 +71,7 @@
             >
               <img v-if="subForm.coverImg" :src="subForm.coverImg" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon" />
+          
             </el-upload>
           </el-form-item>
           </el-col>
@@ -153,6 +154,7 @@ export default {
     if (this.$route.query.act=='1') {
       timetableuniformsGetPid({ id: this.$route.query.id }).then((res) => {
         this.subForm.synopsis = res.body.synopsis;
+        this.subForm.coverImg = res.body.coverImg;
       });
     }
     if (this.$route.query.act=='2') {
@@ -209,7 +211,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 .right_cont {
   margin-top: 50px;
 }
@@ -219,4 +221,5 @@ export default {
 .avatar{
   width: 200px;
 }
+
 </style>

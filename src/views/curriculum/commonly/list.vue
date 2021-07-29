@@ -58,7 +58,7 @@
       </el-table-column>
       <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.video.type=='VIDEO'?'视频':'广告' }}
+       {{ scope.row.video.type == "VIDEO" ? "视频":scope.row.video.type== "ADVERT"? "广告":'' }}
         </template>
       </el-table-column>
     
@@ -158,7 +158,7 @@ export default {
 
 };
 </script>
-<style>
+<style scoped>
 .display{
     display: flex;
     align-items: center;

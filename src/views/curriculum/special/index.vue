@@ -2,14 +2,15 @@
   <div class="app-container">
     <el-header >
       <div class="search">
-        <span class="font">时间：</span>
-         <el-date-picker
-          v-model="page.settingTime"
-          value-format="timestamp"
-          type="date" size='mini'
-          placeholder="选择日期">
-        </el-date-picker>
-
+        <span class="font">门店：</span>
+       <el-select size='mini' clearable v-model="page.libraryId" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.libraryName"
+            :value="item.id">
+          </el-option>
+        </el-select>
         <el-button class="btn" size='mini' type="primary" @click="fetchData('act')"
           >搜索</el-button
         >
@@ -48,7 +49,7 @@
           {{ scope.row.synopsis }}
         </template>
       </el-table-column>
-      <el-table-column label="类型">
+      <el-table-column label="门店">
         <template slot-scope="scope">
         {{!!scope.row.library? scope.row.library.libraryName:'分店信息被删除了！' }}
         </template>
@@ -98,23 +99,26 @@
 
 <script>
 import {
-timetablespecialsDelete,getTimetableUnispecialsList,librarysLists,timetablespecialsDeleteCourse} from '@/api/api';
+timetablespecialsDelete,getTimetableUnispecialsList,librarysLists,timetablespecialsDeleteCourse,} from '@/api/api';
 export default {
   data() {
     return {
+      options:[],
       listLoading: true,
       list: [],
       page: {
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
-        settingTime:''
+        libraryId:''
       },
     };
   },
   created() {
     this.fetchData();
-   
+    librarysLists().then((res) => {
+      this.options = res.body;
+    });
   },
   methods: {
        handleCurrentChange(val) {

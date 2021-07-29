@@ -125,6 +125,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function loginlogssListPid(params) {
+                return request({
+                    url: `/admin/loginlogss/listPid`,
+                    method: 'get',
+                    params
+                })
+            }
             export function mycenterGetLoginUser(params) {
                 return request({
                     url: `/admin/mycenter/getLoginUser`,
@@ -422,6 +429,13 @@ import request from '@/utils/request'
             export function videologssGetVideoLogsList(params) {
                 return request({
                     url: `/admin/videologss/getVideoLogsList`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function getVideoLogsPid(params) {
+                return request({
+                    url: `/admin/videologss/getVideoLogsPid`,
                     method: 'get',
                     params
                 })

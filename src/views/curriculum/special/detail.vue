@@ -231,7 +231,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 .right_cont {
   margin-top: 50px;
 }
