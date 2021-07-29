@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-header>
+    <el-header style="padding:0">
       <div class="topright flex flex-x-end">
         <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
           添加
@@ -42,16 +42,17 @@
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="简介">
-        <template slot-scope="scope">
-          {{ scope.row.introduction }}
-        </template>
-      </el-table-column>
-      <el-table-column label="备注">
+       <el-table-column label="视频标题">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
+      <el-table-column label="视频简介">
+        <template slot-scope="scope">
+          {{ scope.row.introduction }}
+        </template>
+      </el-table-column>
+     
       <el-table-column label="类型">
         <template slot-scope="scope">
           {{ scope.row.type=='VIDEO'?'视频':'广告' }}

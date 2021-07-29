@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-   <el-header>
+   <el-header style="padding:0">
         <div
           class="topright flex"
           style="cursor: pointer; display: flex; align-items: center"
@@ -145,7 +145,7 @@ export default {
 
 };
 </script>
-<style>
+<style scoped>
  .el-header {
   padding: 0;
   display: flex;

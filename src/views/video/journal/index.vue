@@ -9,9 +9,9 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="创建时间">
+      <el-table-column label="用户创建时间">
         <template slot-scope="scope">
-          {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+          {{ scope.row.adminUser.createdTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
       <el-table-column label="用户名">

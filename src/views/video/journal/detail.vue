@@ -21,16 +21,15 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="创建时间">
+      <el-table-column label="日志创建时间">
         <template slot-scope="scope">
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="修改日志" class="row">
+      <el-table-column label="修改日志记录" class="row">
         <template slot-scope="scope">
           {{ scope.row.log}}
-        </template>
-      </el-table-column>
+        </template>444
       <!-- <el-table-column label="用户头像">
         <template slot-scope="scope">
           <el-image 
@@ -142,3 +141,11 @@ export default {
 
 };
 </script>
+<style scoped>
+ .el-header {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

@@ -35,7 +35,7 @@
                 :before-remove="beforeRemove"
                 :before-upload="beforeAvatarAUDIO"
               >
-                <el-button  size="small" type="primary">点击上传</el-button>(只能上传一个)
+                <el-button  size="small" type="primary">点击上传</el-button><span style="white-space:nowrap;">(只能上传一个)</span>
               </el-upload>
             </el-form-item>
 
