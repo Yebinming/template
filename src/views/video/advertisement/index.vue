@@ -22,17 +22,17 @@
       fit
       highlight-current-row
     >
-        <el-table-column label="名称">
+        <el-table-column label="视频名称">
         <template slot-scope="scope">
           {{ scope.row.videoName }}
         </template>
       </el-table-column>
-        <!-- <el-table-column label="地址">
+        <el-table-column label="视频地址">
         <template slot-scope="scope">
-          {{ scope.row.videoAddresses }}
+         <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.videoAddresses)">{{ scope.row.videoAddresses }}</span> 
         </template>
-      </el-table-column> -->
-        <el-table-column label="时长">
+      </el-table-column>
+        <el-table-column label="视频时长(/秒)">
         <template slot-scope="scope">
           {{ scope.row.videoTokinaga }}
         </template>
@@ -52,7 +52,7 @@
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
-      <el-table-column label="类型">
+      <el-table-column label="视频类型">
         <template slot-scope="scope">
           {{ scope.row.type=='VIDEO'?'视频':'广告' }}
         </template>
@@ -121,10 +121,13 @@ export default {
         this.fetchData();
       });
     },
- 
+    open(url){
+       window.open(url)
+    },  
     fetchData() {
       this.listLoading = true;
       videosList(this.page).then((res) => {
+        this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
       });

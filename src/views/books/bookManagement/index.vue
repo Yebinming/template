@@ -1,6 +1,12 @@
 <template>
   <div class="app-container">
-
+     <el-header>
+      <div class="topright flex flex-x-end">
+        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+          添加
+        </el-button>
+      </div>
+    </el-header>
     <el-table
       :data="list"
       element-loading-text="Loading"
@@ -15,15 +21,30 @@
         width="80"
       >
       </el-table-column>
-      <el-table-column label="标题">
+      <el-table-column label="图书馆名称">
         <template slot-scope="scope">
-          {{ scope.row.latitude }}
+          {{ scope.row.libraryName }}
         </template>
       </el-table-column>
 
-      <el-table-column label="图片">
+      <el-table-column label="图书馆图片">
         <template slot-scope="scope">
-          {{ scope.row.longitude }}
+          <!-- {{ scope.row.libraryImg }} -->
+           <el-image
+            style="width:80px"
+            :src="scope.row.libraryImg"
+            :preview-src-list="[scope.row.libraryImg]"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="图书馆地址">
+        <template slot-scope="scope">
+          {{ scope.row.addresses }}
+        </template>
+      </el-table-column>
+      <el-table-column label="简介">
+        <template slot-scope="scope">
+          {{ scope.row.introduction }}
         </template>
       </el-table-column>
  
@@ -36,7 +57,7 @@
             type="primary"
             @click="
               $router.push({
-                path: '/detail',
+                path:$route.path + '/detail',
                 query: {
                   id: scope.row.id,
                 },
@@ -71,9 +92,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { traininglogssDelete,
-adminuserGetAdminUserList,
+import { librarysList,librarysDelete
  } from "@/api/api";
 export default {
   data() {
@@ -90,9 +109,7 @@ export default {
   created() {
     this.fetchData();
   },
-  computed: {
-    ...mapGetters(["id"]),
-  },
+  
   methods: {
     handleCurrentChange(val) {
       this.page.pageNum = --val;
@@ -102,14 +119,14 @@ export default {
       return index + 1 + this.page.pageNum * this.page.pageSize;
     },
     onDelete(id) {
-      traininglogssDelete({ id }).then((res) => {
+      librarysDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
     },
     fetchData() {
       this.page.userId=this.id
-      adminuserGetAdminUserList(this.page).then((res) => {
+      librarysList(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
       });
@@ -125,6 +142,7 @@ export default {
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 .font {
   font-size: 14px;
@@ -132,4 +150,5 @@ export default {
 .btns {
   margin-left: 20px;
 }
+
 </style>

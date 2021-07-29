@@ -22,7 +22,11 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="视频：" prop="videoId">
+            <el-form-item
+              label="视频："
+              prop="videoId"
+              v-if="$route.query.act == '2' || !$route.query.act"
+            >
               <el-select style="width: 334px" v-model="subForm.videoId">
                 <el-option
                   v-for="item in options"
@@ -30,10 +34,14 @@
                   :label="item.videoName"
                   :value="item.id"
                 >
+                  <span style="float: left">{{ item.videoName }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px"
+                    >({{ item.type == "VIDEO" ? "视频" : "广告" }})</span
+                  >
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="分店：" prop="libraryId">
+            <el-form-item label="分店：" prop="libraryId"  v-if=" !$route.query.act" >
               <el-select style="width: 334px" v-model="subForm.libraryId">
                 <el-option
                   v-for="item in option"
@@ -45,9 +53,11 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="设点时间：" prop="settingTime">
+            <el-form-item label="设点时间：" prop="settingTime"  v-if="$route.query.act == '2' || !$route.query.act">
               <el-date-picker
                 value-format="timestamp"
+                :picker-options="dateEnd"
+                @focus="beginDataChange"
                 style="width: 334px"
                 v-model="subForm.settingTime"
                 type="datetime"
@@ -55,13 +65,29 @@
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="简介：" prop="synopsis">
+            <el-form-item
+              label="简介："
+              prop="synopsis"
+              v-if="$route.query.act == '1' || !$route.query.act"
+            >
               <el-input
                 style="width: 334px"
                 v-model="subForm.synopsis"
                 placeholder="请输入"
               />
             </el-form-item>
+            <el-form-item label="封面图片：" prop="coverImg"  v-if="$route.query.act == '1' ">
+            <el-upload
+              class="avatar-uploader"
+              :action="$api.uploadFileUrl"
+              :show-file-list="false"
+              name="upfile"
+              :on-success="onUploadImgSuccessImg"
+            >
+              <img v-if="subForm.coverImg" :src="subForm.coverImg" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
+            </el-upload>
+          </el-form-item>
           </el-col>
         </el-row>
 
@@ -89,18 +115,23 @@ import {
   timetablespecialsUpdate,
   videosLists,
   getTimetablespecialsGet,
-  librarysLists
+  librarysLists,
+  getTimetablespecialsGetPid,
 } from "@/api/api";
 export default {
   data() {
     return {
+      dateEnd: {},
       subForm: {
-        settingTime: this.$route.query.settingTime,
-        videoId: "",
+        id: this.$route.query.id,
+        settingTime: "",
         synopsis: "",
+        libraryId: "",
+        videoId: "",
+        coverImg:''
       },
       options: [],
-      option:[],
+      option: [],
       subRules: {
         settingTime: [
           {
@@ -116,10 +147,24 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+        libraryId: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
         synopsis: [
           {
             required: true,
             message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
+        coverImg: [
+          {
+            required: true,
+            message: "请上传图片",
             trigger: ["blur", "change"],
           },
         ],
@@ -130,19 +175,38 @@ export default {
     videosLists().then((res) => {
       this.options = res.body;
     });
-     librarysLists().then(res=>{
-        this.option = res.body;
-    })
-    if (this.$route.query.id) {
+    librarysLists().then((res) => {
+      this.option = res.body;
+    });
+    if (this.$route.query.act == "1") {
+      getTimetablespecialsGetPid({ id: this.$route.query.id }).then((res) => {
+        this.subForm.synopsis = res.body.synopsis;
+        this.subForm.libraryId = res.body.libraryId;
+        this.subForm.coverImg = res.body.coverImg;
+      });
+    }
+    if (this.$route.query.act == "2") {
       getTimetablespecialsGet({ id: this.$route.query.id }).then((res) => {
-        this.subForm = res.body;
+        this.subForm.settingTime = res.body.settingTime;
+        this.subForm.videoId = res.body.videoId;
+        this.subForm.libraryId = res.body.libraryId;
       });
     }
   },
   methods: {
     onUploadImgSuccessImg(res, file) {
-      this.form.bannerImg = res.body;
+      this.subForm.coverImg = res.body;
       console.log();
+    },
+
+    beginDataChange(times) {
+      if (this.$route.query.id) {
+        this.dateEnd = {
+          disabledDate(time) {
+            return time.getTime();
+          },
+        };
+      }
     },
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
@@ -154,7 +218,7 @@ export default {
             });
           } else {
             timetablespecialsCreate(this.subForm).then((res) => {
-              this.$message.success("修改成功");
+              this.$message.success("新增成功");
               this.$router.back();
             });
           }
@@ -173,5 +237,8 @@ export default {
 }
 .fr {
   width: 500px;
+}
+.avatar{
+  width: 200px;
 }
 </style>

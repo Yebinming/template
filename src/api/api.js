@@ -83,6 +83,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function librarysDelete(params) {
+                return request({
+                    url: `/admin/librarys/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
             export function librarysList(params) {
                 return request({
                     url: `/admin/librarys/list`,
@@ -216,6 +223,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function getTimetablespecialsGetPid(params) {
+                return request({
+                    url: `/admin/timetablespecials/getPid/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
             export function getTimetablespecialsGet(params) {
                 return request({
                     url: `/admin/timetablespecials/get${params.id}`,
@@ -230,6 +244,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function timetablespecialsDeleteCourse(params) {
+                return request({
+                    url: `/admin/timetablespecials/deleteCourse/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
             export function timetablespecialsUpdate(data) {
                 return request({
                     url: `/admin/timetablespecials/update/${data.id}`,
@@ -237,11 +258,11 @@ import request from '@/utils/request'
                     data
                 })
             }
-            export function timetableuniformsCreate(data) {
+            export function timetableuniformsCreate(params) {
                 return request({
                     url: `/admin/timetableuniforms/create`,
                     method: 'post',
-                    data
+                    params
                 })
             }
             export function getTimetable(params) {
@@ -254,6 +275,13 @@ import request from '@/utils/request'
             export function timetableuniformsDelete(params) {
                 return request({
                     url: `/admin/timetableuniforms/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetableuniformsDeleteCourse(params) {
+                return request({
+                    url: `/admin/timetableuniforms/deleteCourse/${params.id}`,
                     method: 'get',
                     params
                 })
@@ -282,6 +310,13 @@ import request from '@/utils/request'
             export function timetableuniformsGet(params) {
                 return request({
                     url: `/admin/timetableuniforms/get/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetableuniformsGetPid(params) {
+                return request({
+                    url: `/admin/timetableuniforms/getPid/${params.id}`,
                     method: 'get',
                     params
                 })

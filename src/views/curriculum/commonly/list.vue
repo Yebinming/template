@@ -36,16 +36,31 @@
           {{ scope.row.settingTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-        <el-table-column label="简介">
+          <el-table-column label="视频名称">
         <template slot-scope="scope">
-          {{ scope.row.synopsis }}
+          {{ scope.row.video.videoName }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="类型">
+      <el-table-column label="视频链接">
         <template slot-scope="scope">
-          {{ scope.row.type=='VIDEO'?'视频':'广告' }}
+          <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column label="视频标题">
+        <template slot-scope="scope">
+          {{ scope.row.video.remarks }}
+        </template>
+      </el-table-column>
+      <el-table-column label="视频简介">
+        <template slot-scope="scope">
+          {{ scope.row.video.introduction }}
+        </template>
+      </el-table-column>
+      <el-table-column label="类型">
+        <template slot-scope="scope">
+          {{ scope.row.video.type=='VIDEO'?'视频':'广告' }}
+        </template>
+      </el-table-column>
     
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
@@ -56,7 +71,7 @@
             @click="
               $router.push({
                 path: '/curriculum/commonly/detail',
-                query: {id:scope.row.id }
+                query: {id:scope.row.id ,act:'2'}
               })
             "
           >
@@ -110,7 +125,7 @@ export default {
         pageNum: 0,
         pageSize: 50,
         totalCount: 0,
-        pid:this.$route.query.pid
+        settingTime:this.$route.query.settingTime
       },
     };
   },
@@ -128,10 +143,13 @@ export default {
         this.fetchData();
       });
     },
- 
+  open(url){
+       window.open(url)
+    }, 
     fetchData() {
       this.listLoading = true;
       getTimetable(this.page).then((res) => {
+        this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
       });

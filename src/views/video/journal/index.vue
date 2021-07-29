@@ -1,19 +1,6 @@
 <template>
   <div class="app-container">
-    <el-header>
-      <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
-          添加
-        </el-button>
-      </div>
-    </el-header>
-       <!-- <el-tabs
-        v-model="activeName"
-        @tab-click="handleClick"
-      >
-        <el-tab-pane label="视频" name="VIDEO"></el-tab-pane>
-        <el-tab-pane label="广告" name="ADVERT"></el-tab-pane>
-      </el-tabs> -->
+  
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -22,46 +9,20 @@
       fit
       highlight-current-row
     >
-        <el-table-column label="名称">
-        <template slot-scope="scope">
-          {{ scope.row.videoName }}
-        </template>
-      </el-table-column>
-        <el-table-column label="地址">
-        <template slot-scope="scope">
-           <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.videoAddresses)">{{ scope.row.videoAddresses }}</span> 
-        </template>
-      </el-table-column>
-        <el-table-column label="时长(/秒)">
-        <template slot-scope="scope">
-          {{ scope.row.videoTokinaga }}
-        </template>
-      </el-table-column>
       <el-table-column label="创建时间">
         <template slot-scope="scope">
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="简介">
-        <template slot-scope="scope">
-          {{ scope.row.introduction }}
-        </template>
-      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
-          {{ scope.row.remarks }}
+          {{ scope.row.log }}
         </template>
       </el-table-column>
-      <el-table-column label="类型">
-        <template slot-scope="scope">
-          {{ scope.row.type=='VIDEO'?'课程':'广告' }}
-        </template>
-      </el-table-column>
-    
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    type="primary" size="small" @click="$router.push({ path:$route.path + '/detail', query: { id: scope.row.id } })">
-             修改
+          <el-button    size="small" @click="onDia( scope.row.id)">
+             查看
           </el-button>
           <el-popconfirm
             confirm-button-text="确定"
@@ -76,6 +37,17 @@
         </template>
       </el-table-column>
     </el-table>
+      <el-dialog
+    title="提示"
+    :visible.sync="dialogVisible"
+    width="30%"
+   >
+    <span>{{log}}</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+  </el-dialog>
            <div class="mt20 flex flex-x-center">
           <el-pagination
             @current-change="handleCurrentChange"
@@ -89,21 +61,18 @@
 </template>
 
 <script>
-import {videosCreate,
-videosDelete,
-videosDetail,
-videosList,
-videosUpdate } from '@/api/api';
+import {videologssGetVideoLogsList,videologssDetail,videologssDelete} from '@/api/api';
 export default {
   data() {
     return {
-      listLoading: true,
+      listLoading: true,  
+      dialogVisible: false,
+      log:'',
       list: [],
       page: {
         pageNum: 0,
-        pageSize: 50,
+        pageSize: 10,
         totalCount: 0,
-        type:'VIDEO'
       },
     };
   },
@@ -116,22 +85,37 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      videosDelete({ id }).then((res) => {
+      videologssDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
     },
- open(url){
-       window.open(url)
-    }, 
+   
+    getCaption(obj){
+        var index=obj.indexOf("\,");
+        obj=obj.substring(index+1,obj.length);
+    //  console.log(obj);
+        return obj;
+    },
+    onDia(id){
+      this.dialogVisible = true
+      videologssDetail({id}).then(res=>{
+        this.log=res.body.log
+      })
+    },
     fetchData() {
       this.listLoading = true;
-      videosList(this.page).then((res) => {
+      videologssGetVideoLogsList(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
+        // this.list.map((v,i)=>{
+        //   return this.list[i].log=this.getCaption(v.log)
+        //     console.log( this.getCaption(v.log));
+        // })
       });
     },
+    
   },
 
 };

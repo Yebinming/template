@@ -8,7 +8,7 @@
         >
           <img
             @click="$router.back()"
-            src="../../assets/img/backs.png"
+            src="../../../assets/img/backs.png"
             alt=""
           />
           <span @click="$router.back()" style="line-height: 1px">返回</span>
@@ -22,10 +22,10 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="标题：" prop="title">
-              <el-input v-model="subForm.title" placeholder="请输入" />
+            <el-form-item label="图书馆名称" prop="libraryName">
+              <el-input v-model="subForm.libraryName" placeholder="请输入" />
             </el-form-item>
-            <el-form-item label="轮播图" prop="img">
+            <el-form-item label="图书馆图片" prop="libraryImg">
               <el-upload
                 class="avatar-uploader"
                 :action="$api.uploadFileUrl"
@@ -33,15 +33,21 @@
                 name="upfile"
                 :on-success="onUploadImgSuccessImg"
               >
-                <img v-if="subForm.img" :src="subForm.img" class="avatar" />
+                <img v-if="subForm.libraryImg" :src="subForm.libraryImg" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon" />
               </el-upload>
-              <span style="color: #999">建议尺寸：750px*422px</span>
             </el-form-item>
-            <el-form-item label="排序数：" prop="sortNum">
+            <el-form-item label="图书馆地址：" prop="addresses">
               <el-input
-                type="number"
-                v-model.number="subForm.sortNum"
+            
+                v-model="subForm.addresses"
+                placeholder="请输入"
+              />
+            </el-form-item>
+            <el-form-item label="简介：" prop="introduction">
+              <el-input
+              
+                v-model="subForm.introduction"
                 placeholder="请输入"
               />
             </el-form-item>
@@ -65,33 +71,41 @@
 </template>
 
 <script>
-import {traininglogssDetail,
-DisableTrain,
-DnableTrain } from "@/api/api";
+import {librarysDetail,
+librarysUpdate,librarysCreate
+ } from "@/api/api";
 export default {
   data() {
     return {
       subForm: {
-        title: "",
-        img: "",
-        sortNum: "",
+      libraryName:'',
+      libraryImg:'',
+      addresses:'',
+      introduction:''
       },
       subRules: {
-        title: [
+        libraryName: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        img: [
+        libraryImg: [
           {
             required: true,
             message: "不能为空",
             trigger: ["blur", "change"],
           },
         ],
-        sortNum: [
+        addresses: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
+        introduction: [
           {
             required: true,
             message: "不能为空",
@@ -103,27 +117,27 @@ export default {
   },
   mounted() {
     if (this.$route.query.id) {
-      traininglogssDetail({ id: this.$route.query.id }).then((res) => {
+      librarysDetail({ id: this.$route.query.id }).then((res) => {
         this.subForm = res.body;
       });
     }
   },
   methods: {
     onUploadImgSuccessImg(res, file) {
-      this.form.bannerImg = res.body;
+      this.subForm.libraryImg = res.body;
       console.log();
     },
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.subForm.id) {
-            bannersUpdate(this.subForm).then((res) => {
+            librarysUpdate(this.subForm).then((res) => {
               this.$message.success("修改成功");
               this.$router.back();
             });
           } else {
-            bannersAdd(this.subForm).then((res) => {
-              this.$message.success("修改成功");
+            librarysCreate(this.subForm).then((res) => {
+              this.$message.success("新增成功");
               this.$router.back();
             });
           }
@@ -139,5 +153,13 @@ export default {
 <style lang="scss" scoped>
 .right_cont {
   margin-top: 50px;
+}
+// .avatar-uploader{
+//   width: 200px;
+//   height: 200px;
+// }
+.avatar {
+  width:200px;
+  height: 200px;
 }
 </style>

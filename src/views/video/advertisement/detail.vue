@@ -35,7 +35,7 @@
                 :before-remove="beforeRemove"
                 :before-upload="beforeAvatarAUDIO"
               >
-                <el-button  size="small" type="primary">点击上传</el-button>
+                <el-button  size="small" type="primary">点击上传</el-button>(只能上传一个)
               </el-upload>
             </el-form-item>
 
@@ -50,6 +50,12 @@
                 placeholder="请输入"
               />
             </el-form-item> -->
+             <el-form-item label="视频名：" prop="videoName">
+              <el-input
+                v-model.number="subForm.videoName"
+                placeholder="请输入"
+              />
+            </el-form-item>
             <el-form-item label="时长：" prop="videoTokinaga">
               <el-input
                 disabled
@@ -58,10 +64,10 @@
               />
             </el-form-item>
            
-            <el-form-item label="备注" prop="remarks">
+            <el-form-item label="广告标题" prop="remarks">
               <el-input v-model="subForm.remarks" placeholder="请输入" />
             </el-form-item>
-            <el-form-item label="简介" prop="introduction">
+            <el-form-item label="广告简介" prop="introduction">
               <el-input v-model="subForm.introduction" placeholder="请输入" />
             </el-form-item>
           </el-col>
@@ -181,7 +187,14 @@ export default {
       //   console.log(JSON.stringify(fileList));
       this.fileList = fileList;
     },
+    getCaption(obj){
+        var index=obj.lastIndexOf("\.");
+        obj=obj.substring(0, index+1);
+    //  console.log(obj);
+        return obj;
+    },
     beforeAvatarAUDIO(file){
+    this.subForm.videoName =this.getCaption(file.name)
     let _this=this
 　　let url = URL.createObjectURL(file)
     var audioElement = new Audio(url)
@@ -201,7 +214,6 @@ export default {
     },
     onBit(formName) {
         if(this.fileList.length>0){
-            this.subForm.videoName = this.fileList[0].name;
             this.subForm.videoAddresses = this.fileList[0].response.url;
         }else{
         this.$message({

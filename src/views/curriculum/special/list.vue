@@ -34,12 +34,28 @@
           {{ scope.row.settingTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-      <el-table-column label="简介">
+      <el-table-column label="视频名称">
         <template slot-scope="scope">
-          {{ scope.row.synopsis }}
+          {{!!scope.row.video? scope.row.video.videoName:'视频被删除了' }}
         </template>
       </el-table-column>
-<!-- 
+      <el-table-column label="视频链接">
+        <template slot-scope="scope">
+          <span v-if="!!!scope.row.video">视频被删除了</span>
+        <span v-else style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
+        </template>
+      </el-table-column>
+      <el-table-column label="简介">
+        <template slot-scope="scope">
+          {{!!scope.row.video? scope.row.video.introduction:'视频被删除了' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="scope">
+          {{!!scope.row.video? scope.row.video.remarks:'视频被删除了' }}
+        </template>
+      </el-table-column>
+      <!-- 
       <el-table-column label="类型">
         <template slot-scope="scope">
           {{ scope.row.type == "VIDEO" ? "视频" : "广告" }}
@@ -54,7 +70,7 @@
             @click="
               $router.push({
                 path: '/curriculum/special/detail',
-                query: { id: scope.row.id }
+                query: { id: scope.row.id,act:'2' }
               })
             "
           >
@@ -114,10 +130,13 @@ export default {
         this.fetchData();
       });
     },
-
+ open(url){
+       window.open(url)
+    }, 
     fetchData() {
       this.listLoading = true;
       specialsGetTimetable(this.page).then((res) => {
+        this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
       });
