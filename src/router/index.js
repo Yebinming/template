@@ -59,69 +59,109 @@ export const constantRoutes = [
   // { path: '*', redirect: '/404', hidden: true }
 ]
 export const asyncRouterMap = [
+  // {
+  //   path: '/traininglogss',
+  //   component: Layout,
+  //   redirect: '/traininglogss/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/traininglogss/index'),
+  //       meta: { title: '训练模式日志', icon: 'home' },
+  //     },
+  //     {
+  //       path: 'detail',
+  //       component: () => import('@/views/traininglogss/detail'),
+  //       meta: { title: '详情', icon: 'home' },
+  //       hidden: true
+  //     },
+  //   ]
+  // },
   {
-    path:'/traininglogss',
+    path: '/user',
     component: Layout,
-    redirect: '/traininglogss/index',
-    children:[
+    redirect: '/user/index',
+    meta: { title: '账号管理', icon: 'home' },
+    children: [
       {
-        path:'index',
-        component:()=>import('@/views/traininglogss/index'),
-        meta: { title: '训练模式日志', icon: 'home' },
+        path: 'index',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'home' },
       },
       {
-        path:'/detail',
-        component:()=>import('@/views/traininglogss/detail'),
-        meta: { title: '详情', icon: 'home' },
+        path: 'detail',
+        component: () => import('@/views/user/detail'),
+        meta: { title: '详情', icon: 'home', activeMenu: '/user/index' },
         hidden: true
+      },
+
+      {
+        path: 'appeal',
+        component: () => import('@/views/user/appeal/index'),
+        meta: { title: '帐号申诉', icon: 'home' },
+      },
+      {
+        path: 'appeal/detail',
+        component: () => import('@/views/user/appeal/detail'),
+        meta: { title: '详情', icon: 'home', activeMenu: '/user/appeal' },
+        hidden: true
+      },
+
+      {
+        path: 'train',
+        component: {template: `<router-view :key="$route.path"/>`},
+        redirect: '/user/train/index',
+        meta: { title: '训练日志', icon: 'home', activeMenu: '/user/train/index' },
+        children: [
+          {
+
+            path: 'index',
+            component: () => import('@/views/user/train/index'),
+            meta: { title: '用户日志', icon: 'home', activeMenu: '/user/train/index' },
+          },
+          {
+            path: 'index/detail',
+            component: () => import('@/views/user/train/detail'),
+            meta: { title: '登录日志', icon: 'home', activeMenu: '/user/train/index' },
+            hidden: true
+          },
+          {
+            path: 'index/detail/log',
+            component: () => import('@/views/user/train/log'),
+            meta: { title: '日志详情', icon: 'home', activeMenu: '/user/train/index' },
+            hidden: true
+          },
+        ]
       },
     ]
   },
   {
-    path:'/adminuser',
-    component: Layout,
-    redirect: '/adminuser/index',
-    children:[
-      {
-        path:'index',
-        component:()=>import('@/views/adminuser/index'),
-        meta: { title: 'app账号管理', icon: 'home' },
-      },
-      {
-        path:'/detail',
-        component:()=>import('@/views/adminuser/detail'),
-        meta: { title: '详情', icon: 'home' },
-        hidden: true
-      },
-    ]
-  },
-  {
-    path:'/curriculum',
+    path: '/curriculum',
     component: Layout,
     redirect: '/curriculum/commonly',
     meta: {
-      title: '课程管理', icon: 'perm', 
+      title: '课程管理', icon: 'perm',
     },
-    children:[
+    children: [
       {
-        path:'commonly',
-        component:()=>import('@/views/curriculum/commonly/index'),
+        path: 'commonly',
+        component: () => import('@/views/curriculum/commonly/index'),
         meta: { title: '统一课表', icon: 'perm' },
       },
       {
-        path:'commonly/detail',
-        component:()=>import('@/views/curriculum/commonly/detail'),
+        path: 'commonly/detail',
+        component: () => import('@/views/curriculum/commonly/detail'),
         meta: { title: '详情', icon: 'perm' },
         hidden: true
       },
       {
-        path:'special',
-        component:()=>import('@/views/curriculum/special/index'),
+        path: 'special',
+        component: () => import('@/views/curriculum/special/index'),
         meta: { title: '特殊课表', icon: 'perm' },
       },
       {
-        path:'special/detail',
-        component:()=>import('@/views/curriculum/special/detail'),
+        path: 'special/detail',
+        component: () => import('@/views/curriculum/special/detail'),
         meta: { title: '详情', icon: 'perm' },
         hidden: true
       },
@@ -129,19 +169,19 @@ export const asyncRouterMap = [
   },
 
 
-  
+
   {
     path: '/permission',
     component: Layout,
     redirect: '/permission/adminuser',
     meta: {
-      title: '权限管理', icon: 'perm', 
+      title: '权限管理', icon: 'perm',
     },
     children: [
       {
         path: 'adminuser',
         component: () => import('@/views/permission/adminuser/index'),
-        meta: { title: '管理员', icon: 'perm',  }
+        meta: { title: '管理员', icon: 'perm', }
       },
       {
         path: 'adminuser/detail',
@@ -152,7 +192,7 @@ export const asyncRouterMap = [
       {
         path: 'role',
         component: () => import('@/views/permission/role/index'),
-        meta: { title: '角色管理', icon: 'perm',}
+        meta: { title: '角色管理', icon: 'perm', }
       },
       {
         path: 'role/detail',
@@ -160,7 +200,7 @@ export const asyncRouterMap = [
         meta: { title: '角色详情' },
         hidden: true
       },
- 
+
     ]
   },
 
@@ -175,7 +215,7 @@ export const asyncRouterMap = [
         meta: { title: '修改密码', icon: 'perm' },
         hidden: true
       }
-     
+
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

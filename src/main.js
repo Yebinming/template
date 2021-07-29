@@ -24,10 +24,12 @@ Vue.prototype.$axios = axios
 
 import * as filters from './filters' // global filters
 import * as utils from '@/utils/index.js'   //基础类库
+import $const from '@/utils/const.js'   //基础类库
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 Vue.prototype.$utils = utils
+Vue.prototype.$const = $const
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

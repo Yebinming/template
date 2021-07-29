@@ -608,4 +608,46 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function traininglogssParentList(params) {
+                return request({
+                    url: `/admin/traininglogss/parentList`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function traininglogssSublevelList(params) {
+                return request({
+                    url: `/admin/traininglogss/sublevelList`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function traininglogssSublevelVideoList(params) {
+                return request({
+                    url: `/admin/traininglogss/sublevelVideoList`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function librarysLists(params) {
+                return request({
+                    url: `/admin/librarys/lists`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function traininglogssDisableTrainDeputy(params) {
+                return request({
+                    url: `/admin/traininglogss/disableTrainDeputy/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function traininglogssEnableTrainDeputy(params) {
+                return request({
+                    url: `/admin/traininglogss/enableTrainDeputy/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
   

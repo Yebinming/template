@@ -429,3 +429,18 @@ export const objectToUrlParams = (t, e) => {
   for (var n in t) r += "&" + n + "=" + (e ? encodeURIComponent(t[n]) : t[n]);
   return r.substr(1);
 }
+
+export const parseStatus = (key, opt, rev) => {
+  opt = opt || {
+    'DISABLED': '禁用',
+    'ENABLED': '启用'
+  }
+  opt && Array.isArray(opt) && (opt = {
+    [opt[0]]: '启用',
+    [opt[1]]: '禁用',
+  })
+  let keys = Object.keys(opt)
+  let result = rev ? opt[keys[0]] == key ? opt[keys[1]] : opt[keys[0]] : opt[key]
+  console.log(result);
+  return result
+}
