@@ -10,6 +10,40 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="form.password" :placeholder="placeholder" />
       </el-form-item>
+       <el-form-item label="年龄" prop="age">
+        <el-input v-model="form.age" placeholder="请输入名称" />
+      </el-form-item>
+       <el-form-item label="头像" prop="headerImg">
+            <el-upload
+              class="avatar-uploader"
+              :action="$api.uploadFileUrl"
+              :show-file-list="false"
+              name="upfile"
+              :on-success="onUploadImgSuccesTopImg"
+            >
+              <img v-if="form.headerImg" :src="form.headerImg" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
+            </el-upload>
+          </el-form-item>
+     
+      <el-form-item label="性别" prop="gender">
+          <el-select v-model="form.gender" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.value"
+              :value="item.label ">
+            </el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="出生日期" prop="birthday">
+           <el-date-picker
+              value-format="timestamp"
+            v-model="form.birthday"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+      </el-form-item>
       <el-form-item label="角色" prop="role[0].code">
         <el-select v-model="form.role[0].code" placeholder="请选择">
           <el-option
@@ -56,9 +90,17 @@ export default {
     return {
       defaultForm: {},
       list: [],
+      options:[
+        {label:'MAN',value:'男'},
+        {label:'WOMAN',value:'女'},
+        {lable:'UNKNOWN',value:'其他'},
+      ],
       form: {
+        headerImg:'',
+        gender:'',
+        birthday:'',
+        age:'',
         role: [{ code: "", }],
-         schoolId: ""
       },
       page: {
         page: 0,
@@ -67,6 +109,34 @@ export default {
       },
       placeholder: this.$route.query.id ? "●●●●●●" : "请输入密码",
       rules: {
+        headerImg: [
+          {
+            required: true,
+            message: "上传头像",
+            trigger: ["blur", "change"],
+          },
+        ],
+        age: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
+        gender: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
+        birthday: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
         userName: [
           {
             required: true,
@@ -92,7 +162,6 @@ export default {
         //   },
         // ],
       },
-      schoolList: []
     };
   },
   mounted() {
@@ -116,7 +185,10 @@ export default {
         this.list = res.body.rows;
       });
     },
-
+    onUploadImgSuccesTopImg(res, file) {
+      this.form.headerImg = res.body;
+      console.log(res.body);
+    },
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -144,3 +216,10 @@ export default {
   },
 };
 </script>
+<style>
+.avatar{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+</style>

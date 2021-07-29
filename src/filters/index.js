@@ -29,9 +29,7 @@ export function timeAgo(time) {
   }
 }
 
-export function trueOrFalse(val) {
-  return val ? '是' : '否'
-}
+
 export function type(val) {
   return val == 'INDUSTRY' ? '行业' : '领域'
 }
@@ -50,6 +48,7 @@ export function types(val) {
 export function lable(val) {
   return  val == '0' ? '首页' : '活动'
 }
+
 
 /**
  * Number formatting

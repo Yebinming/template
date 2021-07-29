@@ -1,25 +1,25 @@
 <template>
   <div class="app-container">
-   
-    <el-header>
-        <div class="search">
-        <span class="font">时间：</span>
-         <el-date-picker
-          v-model="page.settingTime"
-          value-format="timestamp"
-          type="date" size='mini'
-          placeholder="选择日期">
-        </el-date-picker>
-
-        <el-button class="btn" size='mini' type="primary" @click="fetchData('act')"
-          >搜索</el-button
+    <el-header style="padding:0">
+      <div class="topright flex  display">
+        <div
+          class="topright flex"
+          style="cursor: pointer; display: flex; align-items: center"
         >
-      </div>
-      <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+          <img
+            @click="$router.back()"
+            src="../../../assets/img/backs.png"
+            alt=""
+          />
+          <span @click="$router.back()" style="line-height: 1px">返回</span>
+        </div>
+        <!-- <el-button
+          type="primary"
+          style="width: 114px"
+          @click="$router.push({ path: '/curriculum/special/detail',  query: { settingTime:$route.query.settingTime }})"
+        >
           添加
-        </el-button>
-        
+        </el-button> -->
       </div>
     </el-header>
     <el-table
@@ -31,50 +31,55 @@
     >
       <el-table-column label="设定时间">
         <template slot-scope="scope">
-          {{ scope.row.settingTime | parseTime("{y}-{m}-{d}") }}
+          {{ scope.row.settingTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+        </template>
+      </el-table-column>
+      <el-table-column label="视频名称">
+        <template slot-scope="scope">
+          {{ scope.row.video.videoName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="视频链接">
+        <template slot-scope="scope">
+          <!-- <span v-if="!!!scope.row.video">视频被删除了</span> -->
+        <span  style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
         </template>
       </el-table-column>
       <el-table-column label="简介">
         <template slot-scope="scope">
-          {{ scope.row.synopsis }}
+          {{ scope.row.video.introduction }}
         </template>
       </el-table-column>
- <el-table-column label="封面图片">
+      <el-table-column label="备注">
         <template slot-scope="scope">
-           <el-image 
-              style="width: 100px; height: 100px"
-              :src="scope.row.coverImg" 
-              :preview-src-list="[scope.row.coverImg]">
-            </el-image>
+          {{ scope.row.video.remarks }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="类型">
+      
+      <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.type == "VIDEO" ? "视频" : "广告" }}
+          {{ scope.row.video.type == "VIDEO" ? "视频":scope.row.video.type== "ADVERT"? "广告":'' }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <el-table-column label="操作" width="230">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { settingTime: scope.row.settingTime,  } })">
-             查看
-          </el-button>
           <el-button
             type="primary"
             size="small"
             @click="
               $router.push({
-                 path:$route.path + '/detail',
-                query: { id: scope.row.id,act:'1' }
+                path: '/curriculum/special/detail',
+                query: { id: scope.row.id,act:'2' }
               })
             "
           >
             修改
           </el-button>
-             <el-popconfirm
+          <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="不用了"
-            title="确定删除一天的视频吗？"
+            title="确定删除吗？"
             @onConfirm="onDelete(scope.row.id)"
           >
             <el-button slot="reference" class="ml10" size="small" type="danger">
@@ -97,7 +102,7 @@
 </template>
 
 <script>
-import { timetableuniformsDelete,getTimetableUniformsList,timetableuniformsDeleteCourse  } from "@/api/api";
+import { timetablespecialsDelete,specialsGetTimetable } from "@/api/api";
 export default {
   data() {
     return {
@@ -107,6 +112,7 @@ export default {
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
+        pid: this.$route.query.pid,
       },
     };
   },
@@ -119,15 +125,17 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      timetableuniformsDeleteCourse({ id }).then((res) => {
+      timetablespecialsDelete({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
     },
-
+ open(url){
+       window.open(url)
+    }, 
     fetchData() {
       this.listLoading = true;
-      getTimetableUniformsList(this.page).then((res) => {
+      specialsGetTimetable(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
@@ -137,20 +145,9 @@ export default {
 };
 </script>
 <style scoped>
- .el-header {
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.btn {
-  display: flex;
-  align-items: center;
-  height: 28px;
-  margin: auto 0 auto 20px;
-}
-.search {
-  display: flex;
-  line-height: 30px;
+.display{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 </style>

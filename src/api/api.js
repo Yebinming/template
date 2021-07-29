@@ -83,9 +83,23 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function librarysDelete(params) {
+                return request({
+                    url: `/admin/librarys/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
             export function librarysList(params) {
                 return request({
                     url: `/admin/librarys/list`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function librarysLists(params) {
+                return request({
+                    url: `/admin/librarys/lists`,
                     method: 'get',
                     params
                 })
@@ -107,6 +121,13 @@ import request from '@/utils/request'
             export function loginlogssList(params) {
                 return request({
                     url: `/admin/loginlogss/list`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function loginlogssListPid(params) {
+                return request({
+                    url: `/admin/loginlogss/listPid`,
                     method: 'get',
                     params
                 })
@@ -195,9 +216,44 @@ import request from '@/utils/request'
                     data
                 })
             }
+            export function getTimetableUnispecialsList(params) {
+                return request({
+                    url: `/admin/timetablespecials/getTimetableUniformsList`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function specialsGetTimetable(params) {
+                return request({
+                    url: `/admin/timetablespecials/getTimetable`,
+                    method: 'post',
+                    params
+                })
+            }
+            export function getTimetablespecialsGetPid(params) {
+                return request({
+                    url: `/admin/timetablespecials/getPid/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function getTimetablespecialsGet(params) {
+                return request({
+                    url: `/admin/timetablespecials/get${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
             export function timetablespecialsDelete(params) {
                 return request({
                     url: `/admin/timetablespecials/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetablespecialsDeleteCourse(params) {
+                return request({
+                    url: `/admin/timetablespecials/deleteCourse/${params.id}`,
                     method: 'get',
                     params
                 })
@@ -209,16 +265,37 @@ import request from '@/utils/request'
                     data
                 })
             }
-            export function timetableuniformsCreate(data) {
+            export function timetableuniformsCreate(params) {
                 return request({
                     url: `/admin/timetableuniforms/create`,
                     method: 'post',
-                    data
+                    params
+                })
+            }
+            export function getTimetable(params) {
+                return request({
+                    url: `/admin/timetableuniforms/getTimetable`,
+                    method: 'get',
+                    params
                 })
             }
             export function timetableuniformsDelete(params) {
                 return request({
-                    url: `/admin/timetableuniforms/delete`,
+                    url: `/admin/timetableuniforms/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetableuniformsDeleteCourse(params) {
+                return request({
+                    url: `/admin/timetableuniforms/deleteCourse/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function getTimetableUniformsList(params) {
+                return request({
+                    url: `/admin/timetableuniforms/getTimetableUniformsList`,
                     method: 'get',
                     params
                 })
@@ -233,6 +310,20 @@ import request from '@/utils/request'
             export function traininglogssList(params) {
                 return request({
                     url: `/admin/traininglogss/List`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetableuniformsGet(params) {
+                return request({
+                    url: `/admin/timetableuniforms/get/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function timetableuniformsGetPid(params) {
+                return request({
+                    url: `/admin/timetableuniforms/getPid/${params.id}`,
                     method: 'get',
                     params
                 })
@@ -342,6 +433,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function getVideoLogsPid(params) {
+                return request({
+                    url: `/admin/videologss/getVideoLogsPid`,
+                    method: 'get',
+                    params
+                })
+            }
             export function videosCreate(data) {
                 return request({
                     url: `/admin/videos/create`,
@@ -366,6 +464,13 @@ import request from '@/utils/request'
             export function videosList(params) {
                 return request({
                     url: `/admin/videos/list`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function videosLists(params) {
+                return request({
+                    url: `/admin/videos/lists`,
                     method: 'get',
                     params
                 })
@@ -625,13 +730,6 @@ import request from '@/utils/request'
             export function traininglogssSublevelVideoList(params) {
                 return request({
                     url: `/admin/traininglogss/sublevelVideoList`,
-                    method: 'get',
-                    params
-                })
-            }
-            export function librarysLists(params) {
-                return request({
-                    url: `/admin/librarys/lists`,
                     method: 'get',
                     params
                 })
