@@ -264,7 +264,7 @@ export default {
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.subForm.settingTime <= this.subForm.finishTime) {
+          if (this.subForm.settingTime == this.subForm.finishTime) {
             this.$message({
               showClose: true,
               message: "结束时间不能与开始时间相同！",

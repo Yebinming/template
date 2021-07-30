@@ -22,7 +22,7 @@
       >
         <el-row :gutter="30">
           <el-col :span="7">
-            <el-form-item label="请上传视频：" prop='fileList'>
+            <el-form-item label="请上传视频：" >
               <el-upload
                 accept=".mp3 ,.mp4 "
                 class="upload-demo"
