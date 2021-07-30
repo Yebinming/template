@@ -384,13 +384,23 @@ import request from '@/utils/request'
                     params
                 })
             }
-            export function traininglogssDisableTrain(params) {
+            // 拒绝训练模式
+            export function traininglogssDisableTrain(data) {
                 return request({
-                    url: `/admin/traininglogss/disableTrain/${params.id}`,
-                    method: 'get',
-                    params
+                    url: `/admin/traininglogss/disableTrain/${data.id}`,
+                    method: 'post',
+                    data
                 })
             }
+            // 禁用训练模式
+            export function traininglogssTurnTrain(data) {
+                return request({
+                    url: `/admin/traininglogss/turnTrain/${data.id}`,
+                    method: 'post',
+                    data
+                })
+            }
+            // 启用训练模式
             export function traininglogssEnableTrain(params) {
                 return request({
                     url: `/admin/traininglogss/enableTrain/${params.id}`,
@@ -398,6 +408,7 @@ import request from '@/utils/request'
                     params
                 })
             }
+            
             export function traininglogssLogDetail(params) {
                 return request({
                     url: `/admin/traininglogss/logDetail`,
@@ -783,6 +794,7 @@ import request from '@/utils/request'
                     params
                 })
             }
+            // 禁用分店训练模式
             export function traininglogssDisableTrainDeputy(params) {
                 return request({
                     url: `/admin/traininglogss/disableTrainDeputy/${params.id}`,
@@ -790,6 +802,7 @@ import request from '@/utils/request'
                     params
                 })
             }
+            // 启用分店训练模式
             export function traininglogssEnableTrainDeputy(params) {
                 return request({
                     url: `/admin/traininglogss/enableTrainDeputy/${params.id}`,

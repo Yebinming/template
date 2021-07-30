@@ -10,4 +10,6 @@ function _defineProperty(e, _, r) {
 export default (_defineProperty({
     DISABLED: 0,
     ENABLED: 1,
+    ADOPT: 2,
+    REBUT: 3,
 }))

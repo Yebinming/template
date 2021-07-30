@@ -49,11 +49,12 @@
           {{ scope.row.userName }}
         </template>
       </el-table-column>
-      <el-table-column label="性别">
+            <el-table-column label="门店">
         <template slot-scope="scope">
-          {{ scope.row.gender | gender }}
+          {{ scope.row.library ? scope.row.library.libraryName : "" }}
         </template>
       </el-table-column>
+
 
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
@@ -99,8 +100,6 @@ import {
   userIsUnlock,
   userIsUpdate,
 } from "@/api/api";
-const ADOPT = 2;
-const REBUT = 3;
 export default {
   data() {
     return {
@@ -131,10 +130,10 @@ export default {
     adopt(id) {
       this.handlerUpdate({
         id,
-        isUpdate: ADOPT,
-        isUnlock	: ADOPT,
+        isUpdate: this.$const.ADOPT,
+        isUnlock	: this.$const.ADOPT,
       }).then((res) => {
-        this.$message.success("修改成功");
+        this.$message.success("成功");
         this.fetchData();
       });
     },
@@ -147,11 +146,11 @@ export default {
       }).then(({ value }) => {
         this.handlerUpdate({
           id,
-          isUpdate: REBUT,
-          isUnlock	: REBUT,
+          isUpdate: this.$const.REBUT,
+          isUnlock	: this.$const.REBUT,
           forgetText: value,
         }).then((res) => {
-          this.$message.success("修改成功");
+          this.$message.success("成功");
           this.fetchData();
         });
       });

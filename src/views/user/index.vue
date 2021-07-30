@@ -105,11 +105,8 @@
       </el-table-column>
       <el-table-column label="训练模式">
         <template slot-scope="scope">
-          <el-tag
-            effect="plain"
-            :type="scope.row.isTrain == 0 ? 'success' : 'danger'"
-          >
-            {{ scope.row.isTrain == 0 ? "开启" : "关闭" }}
+          <el-tag effect="plain" :type="scope.row.isTrain | isTrainType">
+            {{ scope.row.isTrain | isTrain }}
           </el-tag>
         </template>
       </el-table-column>
@@ -135,16 +132,16 @@
               >{{ scope.row.status == "DISABLED" ? "启用" : "禁用" }}</el-button
             >
             <!-- <el-button
-              :type="scope.row.isTrain == 1 ? 'primary' : 'info'"
+              :type="scope.row.isTrain != 2 ? 'primary' : 'info'"
               size="small"
-              @click="trainStatusChange(!!scope.row.isTrain, scope.row.id)"
+              @click="trainStatusChange(scope.row.isTrain, scope.row.id)"
               >{{
-                (scope.row.isTrain == 1 ? "开启" : "关闭") + "训练模式"
+                (scope.row.isTrain != 2 ? "开启" : "关闭") + "训练模式"
               }}</el-button
             > -->
             <el-popconfirm
-            v-if="scope.row.lognErr == 1"
-            class="ml10"
+              v-if="scope.row.lognErr == 1"
+              class="ml10"
               confirm-button-text="确定"
               cancel-button-text="不用了"
               title="确定忽略吗？"
@@ -248,7 +245,7 @@ export default {
         limit: 10,
         isUpdate: "",
         isUnlock: "",
-        isTrain: false,
+        isTrain: "",
         lognErr: false,
         totalCount: 0,
       },
@@ -320,20 +317,27 @@ export default {
           });
     },
     trainStatusChange(val, id) {
-      val == this.$const.DISABLED
-        ? traininglogssDisableTrain({ id }).then((res) => {
+      val != this.$const.ADOPT
+        ? traininglogssEnableTrain({ id }).then((res) => {
             this.$message({
-              message: "修改成功",
+              message: "成功",
               type: "success",
             });
             this.fetchData();
           })
-        : traininglogssEnableTrain({ id }).then((res) => {
-            this.$message({
-              message: "修改成功",
-              type: "success",
+        : this.$prompt(null, "请输入禁用原因", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            inputPattern: "",
+            inputErrorMessage: "",
+          }).then(({ value }) => {
+            traininglogssDisableTrain({ id, trainText: value }).then((res) => {
+              this.$message({
+                message: "成功",
+                type: "success",
+              });
+              this.fetchData();
             });
-            this.fetchData();
           });
     },
 
@@ -346,7 +350,6 @@ export default {
     },
     fetchData() {
       let data = { ...this.page };
-      data.isTrain ? (data.isTrain = 1) : delete data.isTrain;
       data.lognErr ? (data.lognErr = 1) : delete data.lognErr;
       userGetUserList(data).then((res) => {
         this.page.totalCount = res.body.totalCount;

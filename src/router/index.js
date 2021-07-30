@@ -246,6 +246,18 @@ export const asyncRouterMap = [
         hidden: true
 
       },
+      {
+        path: 'train',
+        component: () => import('@/views/user/train/index'),
+        meta: { title: '训练申请', icon: 'el-icon-coin' },
+      },
+      {
+        path: 'train/detail',
+        component: () => import('@/views/user/train/detail'),
+        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/appeal' },
+        hidden: true
+
+      },
       // {
       //   path: 'train',
       //   component: {template: `<router-view :key="$route.path"/>`},

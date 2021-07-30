@@ -33,6 +33,24 @@ export function timeAgo(time) {
 export function type(val) {
   return val == 'INDUSTRY' ? '行业' : '领域'
 }
+export function isTrain(val) {
+  const opt = {
+    0: "关闭",
+    1: "申请中",
+    2: "通过",
+    3: "拒绝"
+  }
+  return opt[val]
+}
+export function isTrainType(val) {
+  const opt = {
+    0: 'danger',
+    1: 'info',
+    2: 'success',
+    3: 'danger'
+  }
+  return opt[val]
+}
 export function gender(val) {
   return val == 'MAN' ? '男' : '女'
 }
