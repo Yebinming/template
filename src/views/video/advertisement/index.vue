@@ -32,11 +32,11 @@
          <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.videoAddresses)">{{ scope.row.videoAddresses }}</span> 
         </template>
       </el-table-column>
-        <el-table-column label="广告时长(/秒)">
+        <!-- <el-table-column label="广告时长(/秒)">
         <template slot-scope="scope">
           {{ scope.row.videoTokinaga }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="创建时间">
         <template slot-scope="scope">
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}

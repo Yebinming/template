@@ -22,10 +22,10 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="图书馆名称" prop="libraryName">
+            <el-form-item label="门店名称：" prop="libraryName">
               <el-input v-model="subForm.libraryName" placeholder="请输入" />
             </el-form-item>
-            <el-form-item label="图书馆图片" prop="libraryImg">
+            <el-form-item label="门店图片：" prop="libraryImg">
               <el-upload
                 class="avatar-uploader"
                 :action="$api.uploadFileUrl"
@@ -37,7 +37,7 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon" />
               </el-upload>
             </el-form-item>
-            <el-form-item label="图书馆地址：" prop="addresses">
+            <el-form-item label="门店地址：" prop="addresses">
               <el-input
             
                 v-model="subForm.addresses"

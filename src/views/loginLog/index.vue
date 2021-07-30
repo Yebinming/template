@@ -1,6 +1,23 @@
 <template>
   <div class="app-container">
-  
+    <el-header>
+        <div class="search">
+        <span class="font">用户：</span>
+        <el-select clearable size='mini' v-model="page.userid" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.userName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+
+        <el-button class="btn" size='mini' type="primary" @click="fetchData('act')"
+          >搜索</el-button
+        >
+      </div>
+    
+    </el-header>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -9,9 +26,9 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="创建时间">
+      <el-table-column label="时间">
         <template slot-scope="scope">
-          {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+          {{ scope.row.systemTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
       <el-table-column label="用户名">
@@ -28,12 +45,22 @@
           </el-image>
         </template>
       </el-table-column>
+      <el-table-column label="用户名">
+        <template slot-scope="scope">
+          {{ scope.row.user.logAddresses }}
+        </template>
+      </el-table-column>
+      <el-table-column label="修改记录">
+        <template slot-scope="scope">
+          {{ scope.row.behavior }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button  size="small"  @click="$router.push({path: 'loginLog/detail', query: { id: scope.row.id } })">
+          <!-- <el-button  size="small"  @click="$router.push({path: 'loginLog/detail', query: { id: scope.row.id } })">
              查看
-          </el-button>
-          <!-- <el-popconfirm
+          </el-button> -->
+          <el-popconfirm
             confirm-button-text="确定"
             cancel-button-text="不用了"
             title="确定删除吗？"
@@ -42,7 +69,7 @@
             <el-button slot="reference" class="ml10" size="small" type="danger">
               删除
             </el-button>
-          </el-popconfirm> -->
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -70,10 +97,12 @@
 </template>
 
 <script>
-import {loginlogssList} from '@/api/api';
+import {systemLgos,
+systemLgosDel,UserAlllist} from '@/api/api';
 export default {
   data() {
     return {
+      options:[],
       listLoading: true,  
       dialogVisible: false,
       log:'',
@@ -82,11 +111,15 @@ export default {
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
+        userid:''
       },
     };
   },
   created() {
     this.fetchData();
+    UserAlllist().then(res=>{
+      this.options=res.body
+    })
   },
   methods: {
     handleCurrentChange(val) {
@@ -94,7 +127,7 @@ export default {
       this.fetchData();
     },
     onDelete(id) {
-      videologssDelete({ id }).then((res) => {
+      systemLgosDel({ id }).then((res) => {
         this.$message.success("删除成功");
         this.fetchData();
       });
@@ -109,7 +142,7 @@ export default {
  
     fetchData() {
       this.listLoading = true;
-      loginlogssList(this.page).then((res) => {
+      systemLgos(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.listLoading = false;
         this.list = res.body.rows;
@@ -124,3 +157,21 @@ export default {
 
 };
 </script>
+<style scoped>
+ .el-header {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: auto 0 auto 20px;
+}
+.search {
+  display: flex;
+  line-height: 30px;
+}
+</style>

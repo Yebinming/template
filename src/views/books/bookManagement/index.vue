@@ -21,13 +21,13 @@
         width="80"
       >
       </el-table-column>
-      <el-table-column label="图书馆名称">
+      <el-table-column label="门店名称">
         <template slot-scope="scope">
           {{ scope.row.libraryName }}
         </template>
       </el-table-column>
 
-      <el-table-column label="图书馆图片">
+      <el-table-column label="门店图片">
         <template slot-scope="scope">
           <!-- {{ scope.row.libraryImg }} -->
            <el-image
@@ -37,7 +37,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="图书馆地址">
+      <el-table-column label="门店地址">
         <template slot-scope="scope">
           {{ scope.row.addresses }}
         </template>

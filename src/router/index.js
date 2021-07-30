@@ -77,65 +77,8 @@ export const asyncRouterMap = [
   //     },
   //   ]
   // },
+
   {
-    path: '/user',
-    component: Layout,
-    redirect: '/user/index',
-    meta: { title: '账号管理', icon: 'home' },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户管理', icon: 'home' },
-      },
-      {
-        path: 'detail',
-        component: () => import('@/views/user/detail'),
-        meta: { title: '详情', icon: 'home', activeMenu: '/user/index' },
-        hidden: true
-      },
-
-      {
-        path: 'appeal',
-        component: () => import('@/views/user/appeal/index'),
-        meta: { title: '帐号申诉', icon: 'home' },
-      },
-      {
-        path: 'appeal/detail',
-        component: () => import('@/views/user/appeal/detail'),
-        meta: { title: '详情', icon: 'home', activeMenu: '/user/appeal' },
-        hidden: true
-
-      },
-      {
-        path: 'train',
-        component: {template: `<router-view :key="$route.path"/>`},
-        redirect: '/user/train/index',
-        meta: { title: '训练日志', icon: 'home', activeMenu: '/user/train/index' },
-        children: [
-          {
-
-            path: 'index',
-            component: () => import('@/views/user/train/index'),
-            meta: { title: '用户日志', icon: 'home', activeMenu: '/user/train/index' },
-          },
-          {
-            path: 'index/detail',
-            component: () => import('@/views/user/train/detail'),
-            meta: { title: '登录日志', icon: 'home', activeMenu: '/user/train/index' },
-            hidden: true
-          },
-          {
-            path: 'index/detail/log',
-            component: () => import('@/views/user/train/log'),
-            meta: { title: '日志详情', icon: 'home', activeMenu: '/user/train/index' },
-            hidden: true
-          },
-        ]
-      },
-
-    ]},
-        {
     path:'/loginLog',
     component: Layout,
     redirect: '/loginLog/index',
@@ -143,7 +86,7 @@ export const asyncRouterMap = [
       {
         path:'index',
         component:()=>import('@/views/loginLog/index'),
-        meta: { title: '登录日志', icon: 'el-icon-s-flag' },
+        meta: { title: '系统日志', icon: 'el-icon-s-flag' },
       },
       {
         path:'loginLog/detail',
@@ -158,13 +101,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/books/bookManagement',
     meta: {
-      title: '图书管理', icon: 'el-icon-picture-outline-round', 
+      title: '门店管理', icon: 'el-icon-picture-outline-round', 
     },
     children:[
       {
         path:'bookManagement',
         component:()=>import('@/views/books/bookManagement/index'),
-        meta: { title: '图书管理', icon: 'el-icon-picture-outline-round' },
+        meta: { title: '门店管理', icon: 'el-icon-picture-outline-round' },
       },
       {
         path:'bookManagement/detail',
@@ -172,17 +115,17 @@ export const asyncRouterMap = [
         meta: { title: '详情', icon: 'el-icon-picture-outline-round' },
         hidden: true
       },
-      {
-        path:'bookJournal',
-        component:()=>import('@/views/books/bookJournal/index'),
-        meta: { title: '图书日志', icon: 'el-icon-picture-outline-round' },
-      },
-      {
-        path:'bookJournal/detail',
-        component:()=>import('@/views/books/bookJournal/detail'),
-        meta: { title: '详情', icon: 'el-icon-picture-outline-round' },
-        hidden: true
-      },
+      // {
+      //   path:'bookJournal',
+      //   component:()=>import('@/views/books/bookJournal/index'),
+      //   meta: { title: '图书日志', icon: 'el-icon-picture-outline-round' },
+      // },
+      // {
+      //   path:'bookJournal/detail',
+      //   component:()=>import('@/views/books/bookJournal/detail'),
+      //   meta: { title: '详情', icon: 'el-icon-picture-outline-round' },
+      //   hidden: true
+      // },
 
     ]
   },
@@ -260,20 +203,80 @@ export const asyncRouterMap = [
         meta: { title: '详情', icon: 'el-icon-video-camera' },
         hidden: true
       },
-      {
-        path:'journal',
-        component:()=>import('@/views/video/journal/index'),
-        meta: { title: '视频日志', icon: 'el-icon-video-camera' },
-      },
-      {
-        path:'journal/detail',
-        component:()=>import('@/views/video/journal/detail'),
-        meta: { title: '详情', icon: 'el-icon-video-camera' },
-        hidden: true
-      },
+      // {
+      //   path:'journal',
+      //   component:()=>import('@/views/video/journal/index'),
+      //   meta: { title: '视频日志', icon: 'el-icon-video-camera' },
+      // },
+      // {
+      //   path:'journal/detail',
+      //   component:()=>import('@/views/video/journal/detail'),
+      //   meta: { title: '详情', icon: 'el-icon-video-camera' },
+      //   hidden: true
+      // },
     ]
   },
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    meta: { title: '账号管理', icon: 'el-icon-coin' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'el-icon-coin' },
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/user/detail'),
+        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/index' },
+        hidden: true
+      },
 
+      {
+        path: 'appeal',
+        component: () => import('@/views/user/appeal/index'),
+        meta: { title: '帐号申诉', icon: 'el-icon-coin' },
+      },
+      {
+        path: 'appeal/detail',
+        component: () => import('@/views/user/appeal/detail'),
+        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/appeal' },
+        hidden: true
+
+      },
+      // {
+      //   path: 'train',
+      //   component: {template: `<router-view :key="$route.path"/>`},
+      //   redirect: '/user/train/index',
+      //   meta: { title: '训练日志', icon: 'el-icon-coin', activeMenu: '/user/train/index' },
+      //   children: [
+      //     {
+
+      //       path: 'index',
+      //       component: () => import('@/views/user/train/index'),
+      //       meta: { title: '用户日志', icon: 'el-icon-coin', activeMenu: '/user/train/index' },
+      //       hidden: true
+
+      //     },
+      //     {
+      //       path: 'index/detail',
+      //       component: () => import('@/views/user/train/detail'),
+      //       meta: { title: '登录日志', icon: 'el-icon-coin', activeMenu: '/user/train/index' },
+      //       hidden: true
+      //     },
+      //     {
+      //       path: 'index/detail/log',
+      //       component: () => import('@/views/user/train/log'),
+      //       meta: { title: '日志详情', icon: 'el-icon-coin', activeMenu: '/user/train/index' },
+      //       hidden: true
+      //     },
+      //   ]
+      // },
+
+    ]
+  },
 
 
   {

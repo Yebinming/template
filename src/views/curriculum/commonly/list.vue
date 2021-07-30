@@ -13,13 +13,13 @@
           />
           <span @click="$router.back()" style="line-height: 1px">返回</span>
         </div>
-        <!-- <el-button
+        <el-button
           type="primary"
           style="width: 114px"
-          @click="$router.push({ path: '/curriculum/commonly/detail'  })"
+          @click="$router.push({ path: '/curriculum/commonly/detail',query:{pid:$route.query.id,settingTime:$route.query.settingTime,act:'a2'}  })"
         >
           添加
-        </el-button> -->
+        </el-button>
       </div>
     </el-header>
    
@@ -33,7 +33,7 @@
 
       <el-table-column label="设定时间">
         <template slot-scope="scope">
-          {{ scope.row.settingTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+          {{ scope.row.time }}
         </template>
       </el-table-column>
           <el-table-column label="视频名称">
@@ -71,7 +71,7 @@
             @click="
               $router.push({
                 path: '/curriculum/commonly/detail',
-                query: {id:scope.row.id ,act:'2'}
+                query: {id:scope.row.id ,act:'2',pid:$route.query.id}
               })
             "
           >
@@ -122,10 +122,10 @@ export default {
       listLoading: true,
       list: [],
       page: {
+        pid:this.$route.query.id,
         pageNum: 0,
         pageSize: 50,
         totalCount: 0,
-        settingTime:this.$route.query.settingTime
       },
     };
   },

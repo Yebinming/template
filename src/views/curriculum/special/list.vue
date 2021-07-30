@@ -13,13 +13,13 @@
           />
           <span @click="$router.back()" style="line-height: 1px">返回</span>
         </div>
-        <!-- <el-button
+     <el-button
           type="primary"
           style="width: 114px"
-          @click="$router.push({ path: '/curriculum/special/detail',  query: { settingTime:$route.query.settingTime }})"
+          @click="$router.push({ path: '/curriculum/special/detail',query:{pid:$route.query.id,settingTime:$route.query.settingTime,act:'a2'}  })"
         >
           添加
-        </el-button> -->
+        </el-button>
       </div>
     </el-header>
     <el-table
@@ -31,7 +31,7 @@
     >
       <el-table-column label="设定时间">
         <template slot-scope="scope">
-          {{ scope.row.settingTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
+          {{ scope.row.time}}
         </template>
       </el-table-column>
       <el-table-column label="视频名称">
@@ -42,7 +42,7 @@
       <el-table-column label="视频链接">
         <template slot-scope="scope">
           <!-- <span v-if="!!!scope.row.video">视频被删除了</span> -->
-        <span  style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span> 
+        <span  style=" cursor: pointer; color:#004BFF" @click="open(scope.row.video.videoAddresses)">{{ scope.row.video.videoAddresses }}</span>
         </template>
       </el-table-column>
       <el-table-column label="简介">
@@ -55,7 +55,7 @@
           {{ scope.row.video.remarks }}
         </template>
       </el-table-column>
-      
+
       <el-table-column label="类型">
         <template slot-scope="scope">
           {{ scope.row.video.type == "VIDEO" ? "视频":scope.row.video.type== "ADVERT"? "广告":'' }}
@@ -70,7 +70,7 @@
             @click="
               $router.push({
                 path: '/curriculum/special/detail',
-                query: { id: scope.row.id,act:'2' }
+                query: {settingTime: scope.row.settingTime, id: scope.row.id,pid:$route.query.id,act:'2' }
               })
             "
           >
@@ -112,7 +112,7 @@ export default {
         pageNum: 0,
         pageSize: 10,
         totalCount: 0,
-        pid: this.$route.query.pid,
+        pid: this.$route.query.id,
       },
     };
   },
@@ -132,7 +132,7 @@ export default {
     },
  open(url){
        window.open(url)
-    }, 
+    },
     fetchData() {
       this.listLoading = true;
       specialsGetTimetable(this.page).then((res) => {

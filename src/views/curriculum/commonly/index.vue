@@ -16,7 +16,7 @@
         >
       </div>
       <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail', query: { act:'a1',  }})">
           添加
         </el-button>
         
@@ -56,7 +56,7 @@
 
       <el-table-column label="操作" width="230">
         <template slot-scope="scope">
-          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { settingTime: scope.row.settingTime,  } })">
+          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { settingTime: scope.row.settingTime, id: scope.row.id } })">
              查看
           </el-button>
           <el-button
