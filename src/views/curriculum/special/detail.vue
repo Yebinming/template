@@ -63,6 +63,7 @@
               v-if="$route.query.act == '1' || $route.query.act == 'a1'"
             >
               <el-date-picker
+              :disabled='ban'
                 @change="beginChange"
                 style="width: 334px"
                 value-format="timestamp"
@@ -157,6 +158,7 @@ import {
 export default {
   data() {
     return {
+      ban:true,
       dateEnd: {},
       value: [],
       subForm: {
@@ -269,9 +271,8 @@ export default {
       //   };
       // }
     },
-    beginChange(times) {
-      console.log("aa");
-      getTimeToDeterminePids({ settingTime: this.subForm.settingTime }).then(
+    beginChange(times) {  
+      getTimeToDeterminePids({ settingTime: this.subForm.settingTime,libraryId:this.subForm.libraryId }).then(
         (res) => {
           if (res.body == "1") {
             this.$message.error("这一天已经创建了！");
@@ -283,7 +284,7 @@ export default {
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.subForm.settingTime <= this.subForm.finishTime) {
+          if (this.subForm.settingTime == this.subForm.finishTime) {
             this.$message({
               showClose: true,
               message: "结束时间不能小于或等于开始时间！",
@@ -295,6 +296,7 @@ export default {
             if (this.$route.query.act == "1") {
               timetablespecialsUpdate({
                 id: this.$route.query.id,
+                settingTime: this.subForm.settingTime,
                 synopsis: this.subForm.synopsis,
                 coverImg: this.subForm.coverImg,
               }).then((res) => {
@@ -331,12 +333,15 @@ export default {
       });
     },
   },
-  // watch : {
-  //       kilometers:function(val) {
-  //           this.kilometers = val;
-  //           this.meters = this.kilometers * 1000
-  //       },
-  //   }
+  watch : {
+      ['subForm.libraryId'](){
+        if(this.subForm.libraryId){
+          this.ban=false
+        }else{
+           this.ban=true
+        }
+      }
+    }
 };
 </script>
 
