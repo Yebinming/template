@@ -1,72 +1,173 @@
 <template>
   <div class="app-container">
-    <!-- <div class="from_worp">
-      <div class="flex font">
-        仅查看禁用训练模式：
-        <el-switch
-          inactive-test="#000"
-          v-model="page.isTrain"
-          :active-value="1"
-          :inactive-value='""'
+
+    <el-tabs v-model="active" type="card" tab-position="top">
+      <el-tab-pane label="全部" name="all">
+            <el-input
+    class="mb20"
+      style="width: 180px"
+      v-model="page.userName"
+      placeholder="请输入用户名"
+      @input="fetchData()"
+    ></el-input>
+
+        <el-table
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
         >
-        </el-switch>
-      </div>
-    </div> -->
-    <el-table
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column
-        label="序号"
-        type="index"
-        :index="indexMethod"
-        width="80"
-      >
-      </el-table-column>
-      <el-table-column label="头像">
-        <template slot-scope="scope">
-          <el-image
-            style="width: 80px"
-            :src="scope.row.user.headerImg"
-            :preview-src-list="[scope.row.user.headerImg]"
-          />
-        </template>
-      </el-table-column>
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="80"
+          >
+          </el-table-column>
+          <el-table-column label="头像">
+            <template slot-scope="scope">
+              <el-image
+                style="width: 80px"
+                :src="scope.row.headerImg"
+                :preview-src-list="[scope.row.headerImg]"
+              />
+            </template>
+          </el-table-column>
 
-      <el-table-column label="创建时间">
-        <template slot-scope="scope">
-          {{ scope.row.user.createdTime | parseTime }}
-        </template>
-      </el-table-column>
+          <el-table-column label="创建时间" width="180">
+            <template slot-scope="scope">
+              {{ scope.row.createdTime | parseTime }}
+            </template>
+          </el-table-column>
 
-      <el-table-column label="手机号">
-        <template slot-scope="scope">
-          {{ scope.row.user.loginPhone }}
-        </template>
-      </el-table-column>
-      <el-table-column label="用户名">
-        <template slot-scope="scope">
-          {{ scope.row.user.userName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="性别">
-        <template slot-scope="scope">
-          {{ scope.row.user.gender | gender }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="410px">
-        <template slot-scope="scope">
-          <router-link :to="{path: $route.path + '/detail', query: {id: scope.row.id}}">
-            <el-button
-              size="small"
-              >查看详情</el-button>
-          </router-link>
-        </template>
-      </el-table-column>
-    </el-table>
+          <el-table-column label="手机号">
+            <template slot-scope="scope">
+              {{ scope.row.loginPhone }}
+            </template>
+          </el-table-column>
+          <el-table-column label="用户名">
+            <template slot-scope="scope">
+              {{ scope.row.userName }}
+            </template>
+          </el-table-column>
+          <el-table-column label="门店">
+            <template slot-scope="scope">
+              {{ scope.row.library ? scope.row.library.libraryName : "" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="状态">
+            <template slot-scope="scope">
+              <el-tag
+                effect="plain"
+                :type="scope.row.status == 'ENABLED' ? 'success' : 'danger'"
+              >
+                {{ scope.row.status | status }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="训练模式">
+            <template slot-scope="scope">
+              <el-tag effect="plain" :type="scope.row.isTrain | isTrainType">
+                {{ scope.row.isTrain | isTrain }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <div>
+                <el-button
+                  :type="scope.row.isTrain != 2 ? 'primary' : 'info'"
+                  size="small"
+                  @click="trainStatusChange(scope.row.isTrain, scope.row.id)"
+                  >{{
+                    (scope.row.isTrain != 2 ? "开启" : "关闭") + "训练模式"
+                  }}</el-button
+                >
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="待审核" name="audit">
+        <el-table
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+        >
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="80"
+          >
+          </el-table-column>
+          <el-table-column label="头像">
+            <template slot-scope="scope">
+              <el-image
+                style="width: 80px"
+                :src="scope.row.headerImg"
+                :preview-src-list="[scope.row.headerImg]"
+              />
+            </template>
+          </el-table-column>
+
+          <el-table-column label="创建时间" width="180">
+            <template slot-scope="scope">
+              {{ scope.row.createdTime | parseTime }}
+            </template>
+          </el-table-column>
+
+          <el-table-column label="手机号">
+            <template slot-scope="scope">
+              {{ scope.row.loginPhone }}
+            </template>
+          </el-table-column>
+          <el-table-column label="用户名">
+            <template slot-scope="scope">
+              {{ scope.row.userName }}
+            </template>
+          </el-table-column>
+          <el-table-column label="门店">
+            <template slot-scope="scope">
+              {{ scope.row.library ? scope.row.library.libraryName : "" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="状态">
+            <template slot-scope="scope">
+              <el-tag
+                effect="plain"
+                :type="scope.row.status == 'ENABLED' ? 'success' : 'danger'"
+              >
+                {{ scope.row.status | status }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="200">
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                class="mb10"
+                type="primary"
+                @click="adopt(scope.row.id)"
+              >
+                通过
+              </el-button>
+              <el-button
+                slot="reference"
+                size="small"
+                @click="rebut(scope.row.id)"
+                type="danger"
+              >
+                驳回
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
 
     <div class="mt20 flex flex-x-center">
       <el-pagination
@@ -82,7 +183,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Pagination from '@/components/myPagination' // Secondary package based on el-pagination
+import Pagination from "@/components/myPagination"; // Secondary package based on el-pagination
 import {
   traininglogssDelete,
   adminuserGetAdminUserList,
@@ -91,12 +192,14 @@ import {
   userDisable,
   traininglogssDisableTrain,
   traininglogssEnableTrain,
+  traininglogssTurnTrain,
   traininglogssParentList,
 } from "@/api/api";
 export default {
   components: { Pagination },
   data() {
     return {
+      active: "audit",
       list: [],
       // page: {
       //   userId: "",
@@ -105,8 +208,14 @@ export default {
       //   totalCount: 0,
       // },
       page: {
-        pageNum: 0,
-        pageSize: 10,
+        userName: "",
+        regStart: "",
+        regEnd: "",
+        status: "",
+        page: 0,
+        limit: 10,
+        isTrain: 1,
+        totalCount: 0,
       },
     };
   },
@@ -116,59 +225,93 @@ export default {
   computed: {
     ...mapGetters(["id"]),
   },
-  watch: {
-    "page.isTrain"() {
-      this.fetchData();
-    },
-  },
   methods: {
-    change(val, id) {
-      val == this.$const.DISABLED
-        ? userDisable({ id }).then((res) => {
-            this.$message({
-              message: "修改成功",
-              type: "success",
-            });
-            this.fetchData();
-          })
-        : userEnable({ id }).then((res) => {
-            this.$message({
-              message: "修改成功",
-              type: "success",
-            });
-            this.fetchData();
-          });
+    adopt(id) {
+      traininglogssEnableTrain({
+        id,
+      }).then((res) => {
+        this.$message.success("成功");
+        this.fetchData();
+      });
     },
-    trainStatusChange(val, id) {
-      val == this.$const.DISABLED
-        ? traininglogssDisableTrain({ id }).then((res) => {
-            this.$message({
-              message: "修改成功",
-              type: "success",
-            });
-            this.fetchData();
-          })
-        : traininglogssEnableTrain({ id }).then((res) => {
-            this.$message({
-              message: "修改成功",
-              type: "success",
-            });
-            this.fetchData();
-          });
+
+    rebut(id) {
+      this.$prompt(null, "请输入驳回原因", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: "",
+        inputErrorMessage: "",
+      }).then(({ value }) => {
+        traininglogssTurnTrain({
+          id,
+          trainText: value,
+        }).then((res) => {
+          this.$message.success("成功");
+          this.fetchData();
+        });
+      });
     },
 
     handleCurrentChange(val) {
-      this.page.pageNum = --val;
+      this.page.page = --val;
       this.fetchData();
     },
     indexMethod(index) {
-      return index + 1 + this.page.pageNum * this.page.pageSize;
+      return index + 1 + this.page.page * this.page.limit;
     },
     fetchData() {
-      traininglogssParentList(this.page).then((res) => {
+      userGetUserList(this.page).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
       });
+    },
+        trainStatusChange(val, id) {
+      val != this.$const.ADOPT
+        ? traininglogssEnableTrain({ id }).then((res) => {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+            this.fetchData();
+          })
+        : this.$prompt(null, "请输入禁用原因", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            inputPattern: "",
+            inputErrorMessage: "",
+          }).then(({ value }) => {
+            traininglogssDisableTrain({ id, trainText: value }).then((res) => {
+              this.$message({
+                message: "成功",
+                type: "success",
+              });
+              this.fetchData();
+            });
+          });
+    },
+
+  },
+  watch: {
+    active(val) {
+      this.page =
+        val == "all"
+          ? Object.assign(this.page, {
+              userName: "",
+              status: "",
+              page: 0,
+              limit: 10,
+              isTrain: "",
+              totalCount: 0,
+            })
+          : Object.assign(this.page, {
+              userName: "",
+              status: "",
+              page: 0,
+              limit: 10,
+              isTrain: 1,
+              totalCount: 0,
+            });
+      this.fetchData();
     },
   },
 };
