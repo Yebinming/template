@@ -1,0 +1,191 @@
+<template>
+  <div class="app-container">
+    <!-- <div class="from_worp">
+      <div class="flex font">
+        仅查看禁用训练模式：
+        <el-switch
+          inactive-test="#000"
+          v-model="page.isTrain"
+          :active-value="1"
+          :inactive-value='""'
+        >
+        </el-switch>
+      </div>
+    </div> -->
+    <el-table
+      :data="list"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+    >
+      <el-table-column
+        label="序号"
+        type="index"
+        :index="indexMethod"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column label="头像">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 80px"
+            :src="scope.row.user.headerImg"
+            :preview-src-list="[scope.row.user.headerImg]"
+          />
+        </template>
+      </el-table-column>
+
+      <el-table-column label="创建时间">
+        <template slot-scope="scope">
+          {{ scope.row.user.createdTime | parseTime }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="手机号">
+        <template slot-scope="scope">
+          {{ scope.row.user.loginPhone }}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户名">
+        <template slot-scope="scope">
+          {{ scope.row.user.userName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="性别">
+        <template slot-scope="scope">
+          {{ scope.row.user.gender | gender }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="410px">
+        <template slot-scope="scope">
+          <router-link :to="{path: $route.path + '/detail', query: {id: scope.row.id}}">
+            <el-button
+              size="small"
+              >查看详情</el-button>
+          </router-link>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div class="mt20 flex flex-x-center">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :page-size="page.pageSize"
+        layout=" prev, pager, next "
+        :total="page.totalCount"
+      >
+      </el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import Pagination from '@/components/myPagination' // Secondary package based on el-pagination
+import {
+  traininglogssDelete,
+  adminuserGetAdminUserList,
+  userGetUserList,
+  userEnable,
+  userDisable,
+  traininglogssDisableTrain,
+  traininglogssEnableTrain,
+  traininglogssParentList,
+} from "@/api/api";
+export default {
+  components: { Pagination },
+  data() {
+    return {
+      list: [],
+      // page: {
+      //   userId: "",
+      //   page: 0,
+      //   limit: 10,
+      //   totalCount: 0,
+      // },
+      page: {
+        pageNum: 0,
+        pageSize: 10,
+      },
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  computed: {
+    ...mapGetters(["id"]),
+  },
+  watch: {
+    "page.isTrain"() {
+      this.fetchData();
+    },
+  },
+  methods: {
+    change(val, id) {
+      val == this.$const.DISABLED
+        ? userDisable({ id }).then((res) => {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.fetchData();
+          })
+        : userEnable({ id }).then((res) => {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.fetchData();
+          });
+    },
+    trainStatusChange(val, id) {
+      val == this.$const.DISABLED
+        ? traininglogssDisableTrain({ id }).then((res) => {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.fetchData();
+          })
+        : traininglogssEnableTrain({ id }).then((res) => {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.fetchData();
+          });
+    },
+
+    handleCurrentChange(val) {
+      this.page.pageNum = --val;
+      this.fetchData();
+    },
+    indexMethod(index) {
+      return index + 1 + this.page.pageNum * this.page.pageSize;
+    },
+    fetchData() {
+      traininglogssParentList(this.page).then((res) => {
+        this.page.totalCount = res.body.totalCount;
+        this.list = res.body.rows;
+      });
+    },
+  },
+};
+</script>
+<style  scoped>
+.topright {
+  line-height: 60px;
+}
+.el-header {
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.font {
+  font-size: 14px;
+}
+.btns {
+  margin-left: 20px;
+}
+</style>
