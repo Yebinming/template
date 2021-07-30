@@ -31,7 +31,7 @@
           inactive-test="#000"
           v-model="page.isTrain"
           :active-value="true"
-          :inactive-value='false'
+          :inactive-value="false"
           @change="fetchData()"
         >
         </el-switch>
@@ -42,7 +42,7 @@
           inactive-test="#000"
           v-model="page.lognErr"
           :active-value="true"
-          :inactive-value='false'
+          :inactive-value="false"
           @change="fetchData()"
         >
         </el-switch>
@@ -109,7 +109,7 @@
             effect="plain"
             :type="scope.row.isTrain == 0 ? 'success' : 'danger'"
           >
-            {{ scope.row.isTrain == 0 ? "开启 " : "关闭" }}
+            {{ scope.row.isTrain == 0 ? "开启" : "关闭" }}
           </el-tag>
         </template>
       </el-table-column>
@@ -142,13 +142,18 @@
                 (scope.row.isTrain == 1 ? "开启" : "关闭") + "训练模式"
               }}</el-button
             >
-            <el-button
-              v-if="scope.row.lognErr == 1"
-              size="small"
-              type="danger"
-              @click="errIgnore(scope.row.id)"
-              >忽略异常</el-button
+            <el-popconfirm
+            v-if="scope.row.lognErr == 1"
+            class="ml10"
+              confirm-button-text="确定"
+              cancel-button-text="不用了"
+              title="确定忽略吗？"
+              @onConfirm="errIgnore(scope.row.id)"
             >
+              <el-button slot="reference" size="small" type="danger">
+                忽略异常
+              </el-button>
+            </el-popconfirm>
             <router-link
               class="ml10"
               :to="{ path: 'detail', query: { id: scope.row.id } }"
@@ -340,9 +345,9 @@ export default {
       return index + 1 + this.page.page * this.page.limit;
     },
     fetchData() {
-      let data = {...this.page}
-      data.isTrain ? (data.isTrain = 1) : delete data.isTrain
-      data.lognErr ? (data.lognErr = 1) : delete data.lognErr
+      let data = { ...this.page };
+      data.isTrain ? (data.isTrain = 1) : delete data.isTrain;
+      data.lognErr ? (data.lognErr = 1) : delete data.lognErr;
       userGetUserList(data).then((res) => {
         this.page.totalCount = res.body.totalCount;
         this.list = res.body.rows;
