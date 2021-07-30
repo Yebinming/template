@@ -22,7 +22,11 @@
       >
         <el-row :gutter="20">
           <el-col :span="7">
-            <el-form-item label="视频：" prop="videoId" v-if="$route.query.act=='2'|| !$route.query.act">
+            <el-form-item
+              label="视频："
+              prop="videoId"
+              v-if="$route.query.act == '2' || $route.query.act == 'a2'"
+            >
               <el-select style="width: 334px" v-model="subForm.videoId">
                 <!-- <el-option
                   v-for="item in options"
@@ -31,49 +35,85 @@
                   :value="item.id"
                 >
                 </el-option> -->
-                    <el-option
-                      v-for="item in options"
-                      :key="item.id"
-                      :label="item.videoName"
-                      :value="item.id">
-                      <span style="float: left">{{ item.videoName }}</span>
-                      <span style="float: right; color: #8492a6; font-size: 13px">({{ item.type=='VIDEO'?'视频':'广告' }})</span>
-                    </el-option>
+                <el-option
+                  v-for="item in options"
+                  :key="item.id"
+                  :label="item.videoName"
+                  :value="item.id"
+                >
+                  <span style="float: left">{{ item.videoName }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px"
+                    >({{ item.type == "VIDEO" ? "视频" : "广告" }})</span
+                  >
+                </el-option>
               </el-select>
             </el-form-item>
 
-            <el-form-item label="设点时间：" prop="settingTime" v-if="$route.query.act=='2'|| !$route.query.act">
+            <el-form-item
+              label="设点时间："
+              prop="settingTime"
+              v-if="$route.query.act == 'a1'"
+            >
               <el-date-picker
-                value-format="timestamp"
+                @change="beginChange"
                 style="width: 334px"
+                value-format="timestamp"
                 v-model="subForm.settingTime"
-                type="datetime"
+                type="date"
                 placeholder="选择日期"
-                :picker-options="dateEnd"
-                @focus="beginDataChange"
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="简介：" prop="synopsis" v-if="$route.query.act=='1'||!$route.query.act">
+            <el-form-item
+              label="设点时间："
+              prop="value"
+              v-if="$route.query.act == '2' || $route.query.act == 'a2'"
+            >
+              <el-time-picker
+                @change="beginDataChange"
+                is-range
+                v-model="value"
+                value-format="timestamp"
+                format="HH:mm"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                placeholder="选择时间范围"
+              >
+              </el-time-picker>
+              <!-- <el-time-picker v-model="subForm.settingTime" format = 'HH:mm' value-format = 'timestamp' placeholder="选择打卡时间"></el-time-picker> -->
+            </el-form-item>
+            <el-form-item
+              label="简介："
+              prop="synopsis"
+              v-if="$route.query.act == '1' || $route.query.act == 'a1'"
+            >
               <el-input
                 style="width: 334px"
                 v-model="subForm.synopsis"
                 placeholder="请输入"
               />
             </el-form-item>
-            <el-form-item label="封面图片：" prop="coverImg"  v-if="$route.query.act == '1' ">
-            <el-upload
-              class="avatar-uploader"
-              :action="$api.uploadFileUrl"
-              :show-file-list="false"
-              name="upfile"
-              :on-success="onUploadImgSuccessImg"
+            <el-form-item
+              label="封面图片："
+              prop="coverImg"
+              v-if="$route.query.act == '1' || $route.query.act == 'a1'"
             >
-              <img v-if="subForm.coverImg" :src="subForm.coverImg" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-          
-            </el-upload>
-          </el-form-item>
+              <el-upload
+                class="avatar-uploader"
+                :action="$api.uploadFileUrl"
+                :show-file-list="false"
+                name="upfile"
+                :on-success="onUploadImgSuccessImg"
+              >
+                <img
+                  v-if="subForm.coverImg"
+                  :src="subForm.coverImg"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </el-form-item>
           </el-col>
         </el-row>
 
@@ -102,17 +142,22 @@ import {
   videosLists,
   timetableuniformsGet,
   timetableuniformsGetPid,
+  getTimeToDetermine,
+  getTimeToDeterminePid,
 } from "@/api/api";
 export default {
   data() {
     return {
-    dateEnd:{},
+      dateEnd: {},
+      value: [Date.now(), Date.now()],
       subForm: {
-        settingTime: this.$route.query.settingTime,
+        settingTime: "",
+        finishTime: "",
         videoId: "",
         synopsis: "",
         coverImg: "",
         id: this.$route.query.id,
+        pid: this.$route.query.pid,
       },
       options: [],
       subRules: {
@@ -120,7 +165,7 @@ export default {
           {
             required: true,
             message: "不能为空",
-            trigger: ["blur", "change"],
+            trigger: ["change"],
           },
         ],
         videoId: [
@@ -151,56 +196,113 @@ export default {
     videosLists().then((res) => {
       this.options = res.body;
     });
-    if (this.$route.query.act=='1') {
+
+    if (this.$route.query.act == "1") {
       timetableuniformsGetPid({ id: this.$route.query.id }).then((res) => {
         this.subForm.synopsis = res.body.synopsis;
         this.subForm.coverImg = res.body.coverImg;
+        this.subForm.settingTime = res.body.settingTime;
       });
     }
-    if (this.$route.query.act=='2') {
+    if (this.$route.query.act == "2") {
       timetableuniformsGet({ id: this.$route.query.id }).then((res) => {
-        this.subForm.settingTime = res.body.settingTime;
         this.subForm.videoId = res.body.videoId;
         this.subForm.synopsis = res.body.synopsis;
+        // this.value[0]=res.body.settingTime,
+        // this.value[1]=res.body.finishTime
+        this.$set(this.value, 0, res.body.settingTime);
+        this.$set(this.value, 1, res.body.finishTime);
       });
+    }
+    if (this.$route.query.act == "a2") {
+      // this.value[0]=Number(this.$route.query.settingTime)
+      // this.value[1]=Number(this.$route.query.settingTime)
+      this.$set(this.value, 0, this.$route.query.settingTime);
+      this.$set(this.value, 1, this.$route.query.settingTime);
     }
   },
   methods: {
     onUploadImgSuccessImg(res, file) {
       this.subForm.coverImg = res.body;
-      console.log();
     },
-    beginDataChange (times) {
-      if (this.$route.query.id) {
-        this.dateEnd = {
-          disabledDate(time) {
-            return time.getTime();
+    beginDataChange(times) {
+        getTimeToDetermine({
+          settingTime: this.value[0],
+          finishTime: this.value[1],
+          pid: this.$route.query.pid,
+        }).then((res) => {
+          if (res.body == "1") {
+            this.$message.error("这个时间段已经被占用了！");
+            this.$set(this.value, 0, this.$route.query.settingTime);
+            this.$set(this.value, 1, this.$route.query.settingTime);
+          } else {
+            this.subForm.settingTime = this.value[0];
+            this.subForm.finishTime = this.value[1];
+          }
+        });
+
+      // if (this.$route.query.id) {
+      //   this.dateEnd = {
+      //     disabledDate(time) {
+      //       return time.getTime();
+      //     }
+      //   }
+      // }
+    },
+    beginChange(times) {
+      console.log("aa");
+      getTimeToDeterminePid({ settingTime: this.subForm.settingTime }).then(
+        (res) => {
+          if (res.body == "1") {
+            this.$message.error("这一天已经创建了！");
+            this.subForm.settingTime = "";
           }
         }
-      }
+      );
     },
-    
+
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.$route.query.id) {
-            if(this.$route.query.act=='1'){
-              timetableuniformsUpdate({id:this.$route.query.id,synopsis:this.subForm.synopsis,coverImg:this.subForm.coverImg}).then((res) => {
-              this.$message.success("修改成功");
-              this.$router.back();
+          if (this.subForm.settingTime <= this.subForm.finishTime) {
+            this.$message({
+              showClose: true,
+              message: "结束时间不能与开始时间相同！",
+              type: "error",
             });
-            }else{
-
+            return
+          }
+          if (this.$route.query.id) {
+            if (this.$route.query.act == "1") {
+              timetableuniformsUpdate({
+                id: this.$route.query.id,
+                synopsis: this.subForm.synopsis,
+                coverImg: this.subForm.coverImg,
+              }).then((res) => {
+                this.$message.success("修改成功");
+                this.$router.back();
+              });
+            } else {
               timetableuniformsUpdate(this.subForm).then((res) => {
                 this.$message.success("修改成功");
                 this.$router.back();
               });
             }
           } else {
-            timetableuniformsCreate(this.subForm).then((res) => {
-              this.$message.success("新增成功");
-              this.$router.back();
-            });
+            if (this.$route.query.act == "1") {
+              timetableuniformsCreate({
+                settingTime: this.subForm.settingTime,
+                synopsis: this.subForm.synopsis,
+              }).then((res) => {
+                this.$message.success("新增成功");
+                this.$router.back();
+              });
+            } else {
+              timetableuniformsCreate(this.subForm).then((res) => {
+                this.$message.success("新增成功");
+                this.$router.back();
+              });
+            }
           }
         } else {
           this.$message.warning("请填写内容");
@@ -208,6 +310,12 @@ export default {
       });
     },
   },
+  // watch: {
+  //   kilometers: function (val) {
+  //     this.kilometers = val;
+  //     this.meters = this.kilometers * 1000;
+  //   },
+  // },
 };
 </script>
 
@@ -218,8 +326,7 @@ export default {
 .fr {
   width: 500px;
 }
-.avatar{
+.avatar {
   width: 200px;
 }
-
 </style>

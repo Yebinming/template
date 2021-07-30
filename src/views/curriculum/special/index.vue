@@ -16,12 +16,12 @@
         >
       </div>
       <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail',query: { act:'a1',  }})">
           添加
         </el-button>
       </div>
     </el-header>
-   
+
     <el-table
       :data="list"
       element-loading-text="Loading"
@@ -37,9 +37,9 @@
       </el-table-column>
       <el-table-column label="封面图片">
         <template slot-scope="scope">
-           <el-image 
+           <el-image
               style="width: 100px; height: 100px"
-              :src="scope.row.coverImg" 
+              :src="scope.row.coverImg"
               :preview-src-list="[scope.row.coverImg]">
             </el-image>
         </template>
@@ -54,10 +54,10 @@
         {{!!scope.row.library? scope.row.library.libraryName:'分店信息被删除了！' }}
         </template>
       </el-table-column>
-    
+
       <el-table-column label="操作" width="230">
         <template slot-scope="scope">
-          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { pid: scope.row.id } })">
+          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { id: scope.row.id,settingTime:scope.row.settingTime } })">
              查看
           </el-button>
           <el-button
@@ -131,7 +131,7 @@ export default {
         this.fetchData();
       });
     },
- 
+
     fetchData() {
       this.listLoading = true;
       getTimetableUnispecialsList(this.page).then((res) => {

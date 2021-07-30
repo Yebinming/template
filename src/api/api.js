@@ -146,6 +146,34 @@ import request from '@/utils/request'
                     data
                 })
             }
+            export function getTimeToDetermine(data) {
+                return request({
+                    url: `/admin/timetableuniforms/getTimeToDetermine`,
+                    method: 'post',
+                    data
+                })
+            }
+            export function getTimeToDeterminePid(data) {
+                return request({
+                    url: `/admin/timetableuniforms/getTimeToDeterminePid`,
+                    method: 'post',
+                    data
+                })
+            }
+            export function getTimeToDetermines(data) {
+                return request({
+                    url: `/admin/timetablespecials/getTimeToDetermine`,
+                    method: 'post',
+                    data
+                })
+            }
+            export function getTimeToDeterminePids(data) {
+                return request({
+                    url: `/admin/timetablespecials/getTimeToDeterminePid`,
+                    method: 'post',
+                    data
+                })
+            }
             export function permissionAdd(data) {
                 return request({
                     url: `/admin/permission/add`,
@@ -172,6 +200,27 @@ import request from '@/utils/request'
                     url: `/admin/permission/update`,
                     method: 'post',
                     data
+                })
+            }
+            export function UserAlllist(params) {
+                return request({
+                    url: `admin/user/list`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function systemLgos(params) {
+                return request({
+                    url: `admin/systemLgos`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function systemLgosDel(params) {
+                return request({
+                    url: `/admin/systemLgos/${params.id}`,
+                    method: 'get',
+                    params
                 })
             }
             export function adminRole(params) {

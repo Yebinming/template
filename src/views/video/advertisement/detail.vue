@@ -22,7 +22,7 @@
       >
         <el-row :gutter="30">
           <el-col :span="7">
-            <el-form-item label="请上传视频：">
+            <el-form-item label="请上传视频：" prop='fileList'>
               <el-upload
                 accept=".mp3 ,.mp4 "
                 class="upload-demo"
@@ -56,13 +56,13 @@
                 placeholder="请输入"
               />
             </el-form-item>
-            <el-form-item label="时长：" prop="videoTokinaga">
+            <!-- <el-form-item label="时长：" prop="videoTokinaga">
               <el-input
                 disabled
                 v-model.number="subForm.videoTokinaga"
                 placeholder="请输入"
               />
-            </el-form-item>
+            </el-form-item> -->
            
             <el-form-item label="广告标题" prop="remarks">
               <el-input v-model="subForm.remarks" placeholder="请输入" />
@@ -220,6 +220,7 @@ export default {
           message: '还没上传视频哦',
           type: 'warning'
         });
+        return
         }
       
     //   this.subForm.videoTokinaga = this.fileList[0].size;

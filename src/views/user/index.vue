@@ -25,7 +25,7 @@
         @click="store.visible = true"
         >按门店启用/禁用</el-button
       >
-      <span class="ml10">
+      <!-- <span class="ml10">
         仅查看禁用训练模式：
         <el-switch
           inactive-test="#000"
@@ -35,7 +35,7 @@
           @change="fetchData()"
         >
         </el-switch>
-      </span>
+      </span> -->
       <span class="ml10">
         仅查看登录异常
         <el-switch
@@ -134,14 +134,14 @@
               "
               >{{ scope.row.status == "DISABLED" ? "启用" : "禁用" }}</el-button
             >
-            <el-button
+            <!-- <el-button
               :type="scope.row.isTrain == 1 ? 'primary' : 'info'"
               size="small"
               @click="trainStatusChange(!!scope.row.isTrain, scope.row.id)"
               >{{
                 (scope.row.isTrain == 1 ? "开启" : "关闭") + "训练模式"
               }}</el-button
-            >
+            > -->
             <el-popconfirm
             v-if="scope.row.lognErr == 1"
             class="ml10"
