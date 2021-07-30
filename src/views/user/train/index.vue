@@ -1,15 +1,25 @@
 <template>
   <div class="app-container">
-
-    <el-tabs v-model="active" type="card" tab-position="top">
-      <el-tab-pane label="全部" name="all">
-            <el-input
-    class="mb20"
+    <div class="mb20">
+                  <el-input
+    class=""
       style="width: 180px"
       v-model="page.userName"
       placeholder="请输入用户名"
       @input="fetchData()"
     ></el-input>
+
+            <el-button
+        type="primary"
+        size="small"
+        class="ml10"
+        @click="store.visible = true"
+        >门店启用/禁用训练模式</el-button
+      >
+
+    </div>
+    <el-tabs v-model="active" tab-position="top">
+      <el-tab-pane label="全部" name="all">
 
         <el-table
           :data="list"
@@ -71,6 +81,11 @@
               <el-tag effect="plain" :type="scope.row.isTrain | isTrainType">
                 {{ scope.row.isTrain | isTrain }}
               </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="禁用原因">
+            <template slot-scope="scope">
+                {{ scope.row.trainText }}
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -178,6 +193,40 @@
       >
       </el-pagination>
     </div>
+        <el-dialog
+      title="按门店禁用/启用"
+      :visible.sync="store.visible"
+      width="30%"
+    >
+      <span>
+          
+        <el-select
+          v-model="store.id"
+          placeholder="请选择门店"
+          clearable
+          filterable
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.libraryName"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+
+        <el-radio-group class="ml20" v-model="store.type">
+          <el-radio :label="$const.DISABLED"> 禁用 </el-radio>
+          <el-radio :label="$const.ENABLED"> 启用 </el-radio>
+        </el-radio-group>
+      </span>
+      <el-input v-model="store.trainText" v-if="store.type == $const.DISABLED" class="mt20" placeholder="请输入禁用原因"></el-input>
+      <span slot="footer">
+        <el-button @click="store.visible = false">取消</el-button>
+        <el-button type="primary" @click="handleDisAndEna">确定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -194,11 +243,22 @@ import {
   traininglogssEnableTrain,
   traininglogssTurnTrain,
   traininglogssParentList,
+  traininglogssDisableTrainDeputy,
+  traininglogssEnableTrainDeputy,
+  librarysLists,
 } from "@/api/api";
 export default {
   components: { Pagination },
   data() {
     return {
+      options: [],
+            store: {
+        visible: false,
+        type: this.$const.DISABLED,
+        id: "",
+        trainText: ""
+      },
+
       active: "audit",
       list: [],
       // page: {
@@ -220,12 +280,49 @@ export default {
     };
   },
   created() {
+        librarysLists().then((res) => {
+      this.options = res.body;
+    });
+
+
     this.fetchData();
   },
   computed: {
     ...mapGetters(["id"]),
   },
   methods: {
+        handleDisAndEna() {
+      if (!this.store.id) {
+        this.$message({
+          message: "请选择门店",
+          type: "error",
+        });
+        return;
+      }
+      this.store.type == this.$const.DISABLED
+        ? traininglogssDisableTrainDeputy({
+            id: this.store.id,
+            trainText: this.store.trainText,
+          }).then((res) => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+            this.store.visible = false;
+            this.fetchData();
+          })
+        : traininglogssEnableTrainDeputy({
+            id: this.store.id,
+          }).then((res) => {
+            this.$message({
+              message: "提交成功",
+              type: "success",
+            });
+            this.store.visible = false;
+            this.fetchData();
+          });
+    },
+
     adopt(id) {
       traininglogssEnableTrain({
         id,
