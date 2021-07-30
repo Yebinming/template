@@ -237,7 +237,7 @@ export const asyncRouterMap = [
       {
         path: 'appeal',
         component: () => import('@/views/user/appeal/index'),
-        meta: { title: '帐号申诉', icon: 'el-icon-coin' },
+        meta: { title: '申诉管理', icon: 'el-icon-coin' },
       },
       {
         path: 'appeal/detail',
@@ -249,7 +249,7 @@ export const asyncRouterMap = [
       {
         path: 'train',
         component: () => import('@/views/user/train/index'),
-        meta: { title: '训练申请', icon: 'el-icon-coin' },
+        meta: { title: '训练管理', icon: 'el-icon-coin' },
       },
       {
         path: 'train/detail',

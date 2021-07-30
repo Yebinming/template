@@ -18,13 +18,6 @@
         <el-option label="启用" value="ENABLED"></el-option>
         <el-option label="禁用" value="DISABLED"></el-option>
       </el-select>
-      <el-button
-        type="primary"
-        size="small"
-        class="ml10"
-        @click="store.visible = true"
-        >按门店启用/禁用</el-button
-      >
       <!-- <span class="ml10">
         仅查看禁用训练模式：
         <el-switch

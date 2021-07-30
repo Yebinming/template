@@ -54,6 +54,11 @@
           {{ scope.row.library ? scope.row.library.libraryName : "" }}
         </template>
       </el-table-column>
+      <el-table-column label="原因">
+        <template slot-scope="scope">
+          {{ active == "isUpdate" ? scope.row.forgetText : scope.row.applyText}}
+        </template>
+      </el-table-column>
 
 
       <el-table-column label="操作" width="200">
@@ -149,6 +154,7 @@ export default {
           isUpdate: this.$const.REBUT,
           isUnlock	: this.$const.REBUT,
           forgetText: value,
+          applyText: value,
         }).then((res) => {
           this.$message.success("成功");
           this.fetchData();
