@@ -339,7 +339,7 @@ export default {
         inputPattern: "",
         inputErrorMessage: "",
       }).then(({ value }) => {
-        traininglogssTurnTrain({
+        traininglogssDisableTrain({
           id,
           trainText: value,
         }).then((res) => {
@@ -377,7 +377,7 @@ export default {
             inputPattern: "",
             inputErrorMessage: "",
           }).then(({ value }) => {
-            traininglogssDisableTrain({ id, trainText: value }).then((res) => {
+            traininglogssTurnTrain({ id, trainText: value }).then((res) => {
               this.$message({
                 message: "成功",
                 type: "success",
