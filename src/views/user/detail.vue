@@ -123,6 +123,7 @@ export default {
           userName: res.body.userName,
           libraryId: res.body.libraryId,
         };
+        !!!res.body.library? this.subForm.libraryId='': this.subForm.libraryId = res.body.libraryId;
       });
     }
   },

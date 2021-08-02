@@ -33,24 +33,59 @@ export function timeAgo(time) {
 export function type(val) {
   return val == 'INDUSTRY' ? '行业' : '领域'
 }
-export function isTrain(val) {
+//训练模式申请状态（客户端发起）
+export function isTrain(val, isTabooTrain) {
+  let res;
   const opt = {
     0: "关闭",
     1: "申请中",
     2: "通过",
     3: "拒绝"
   }
-  return opt[val]
+  switch (isTabooTrain) {
+    case 0:
+      res = opt[val]
+      break;
+    case 1:
+      res = '禁用'
+  }
+  return res
 }
-export function isTrainType(val) {
+//训练模式禁用启用（CMS发起）
+export function isTabooTrain(val) {
   const opt = {
-    0: 'danger',
-    1: 'info',
-    2: 'success',
-    3: 'danger'
+    0: "启用",
+    1: "禁用"
   }
   return opt[val]
 }
+// export function isTrainType(val) {
+//   const opt = {
+//     0: 'danger',
+//     1: 'info',
+//     2: 'success',
+//     3: 'danger'
+//   }
+//   return opt[val]
+// }
+export function isTrainType(val, isTabooTrain) {
+  let res;
+  const opt = {
+    0: "danger",
+    1: "info",
+    2: "success",
+    3: "danger"
+  }
+  switch (isTabooTrain) {
+    case 0:
+      res = opt[val]
+      break;
+    case 1:
+      res = 'danger'
+  }
+  return res
+}
+
 export function gender(val) {
   return val == 'MAN' ? '男' : '女'
 }

@@ -74,6 +74,7 @@
                 is-range
                 v-model="value"
                 value-format="timestamp"
+                :clearable='false'
                 format="HH:mm"
                 range-separator="至"
                 start-placeholder="开始时间"
@@ -195,6 +196,7 @@ export default {
   mounted() {
     videosLists().then((res) => {
       this.options = res.body;
+      
     });
 
     if (this.$route.query.act == "1") {
@@ -206,10 +208,8 @@ export default {
     }
     if (this.$route.query.act == "2") {
       timetableuniformsGet({ id: this.$route.query.id }).then((res) => {
-        this.subForm.videoId = res.body.videoId;
+        res.body.video.remarks=='视频已被删除'? this.subForm.videoId='':   this.subForm.videoId = res.body.videoId;
         this.subForm.synopsis = res.body.synopsis;
-        // this.value[0]=res.body.settingTime,
-        // this.value[1]=res.body.finishTime
         this.$set(this.value, 0, res.body.settingTime);
         this.$set(this.value, 1, res.body.finishTime);
       });
@@ -226,7 +226,8 @@ export default {
       this.subForm.coverImg = res.body;
     },
     beginDataChange(times) {
-        getTimeToDetermine({
+      if(this.$route.query.act=='a2'){
+         getTimeToDetermine({
           settingTime: this.value[0],
           finishTime: this.value[1],
           pid: this.$route.query.pid,
@@ -239,8 +240,26 @@ export default {
             this.subForm.settingTime = this.value[0];
             this.subForm.finishTime = this.value[1];
           }
+         
         });
-
+      }else{
+          getTimeToDetermine({
+          settingTime: this.value[0],
+          finishTime: this.value[1],
+          pid: this.$route.query.pid,
+          id:this.$route.query.id,
+        }).then((res) => {
+          if (res.body == "1") {
+            this.$message.error("这个时间段已经被占用了！");
+            this.$set(this.value, 0, this.$route.query.settingTime);
+            this.$set(this.value, 1, this.$route.query.settingTime);
+          } else {
+            this.subForm.settingTime = this.value[0];
+            this.subForm.finishTime = this.value[1];
+          }
+         
+        });
+      }
       // if (this.$route.query.id) {
       //   this.dateEnd = {
       //     disabledDate(time) {
@@ -264,7 +283,7 @@ export default {
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.subForm.settingTime == this.subForm.finishTime) {
+          if (this.$route.query.act=='a2'&&this.value[0] == this.value[1]) {
             this.$message({
               showClose: true,
               message: "结束时间不能与开始时间相同！",

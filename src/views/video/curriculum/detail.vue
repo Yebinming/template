@@ -34,6 +34,7 @@
                 :file-list="fileList"
                 :before-remove="beforeRemove"
                 :before-upload="beforeAvatarAUDIO"
+                :on-success="handleVideoSuccess"
               >
                 <el-button  size="small" type="primary">点击上传</el-button><span style="white-space:nowrap;">(只能上传一个)</span>
               </el-upload>
@@ -186,10 +187,14 @@ export default {
     handleChange(file, fileList) {
       //   console.log(JSON.stringify(fileList));
       this.fileList = fileList;
+      console.log(fileList);
+    },
+    handleVideoSuccess(file, fileList){
+      console.log(file, fileList);
     },
      getCaption(obj){
         var index=obj.lastIndexOf("\.");
-        obj=obj.substring(0, index+1);
+        obj=obj.substring(0, index);
     //  console.log(obj);
         return obj;
     },
@@ -207,11 +212,10 @@ export default {
 },
 
     beforeRemove(file, fileList) {
-      console.log(file);
+    
       //  console.log(fileList)
       this.fileList = fileList;
-
-      return;
+  
     },
  
     onBit(formName) {

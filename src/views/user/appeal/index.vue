@@ -35,7 +35,7 @@
 
       <el-table-column label="创建时间">
         <template slot-scope="scope">
-          {{ scope.row.createdTime | parseTime }}
+          {{ scope.row.updatedTime | parseTime }}
         </template>
       </el-table-column>
 

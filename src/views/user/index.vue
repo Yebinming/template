@@ -98,8 +98,8 @@
       </el-table-column>
       <el-table-column label="训练模式">
         <template slot-scope="scope">
-          <el-tag effect="plain" :type="scope.row.isTrain | isTrainType">
-            {{ scope.row.isTrain | isTrain }}
+          <el-tag effect="plain" :type="scope.row.isTrain | isTrainType(scope.row.isTabooTrain)">
+            {{ scope.row.isTrain | isTrain(scope.row.isTabooTrain) }}
           </el-tag>
         </template>
       </el-table-column>

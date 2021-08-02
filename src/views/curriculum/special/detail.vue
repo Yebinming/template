@@ -60,7 +60,7 @@
             <el-form-item
               label="设点时间："
               prop="settingTime"
-              v-if="$route.query.act == '1' || $route.query.act == 'a1'"
+              v-if="$route.query.act == 'a1'"
             >
               <el-date-picker
               :disabled='ban'
@@ -81,6 +81,7 @@
               <el-time-picker
                 @blur="beginDataChange"
                 is-range
+                :clearable='false'
                 v-model="value"
                 value-format="timestamp"
                 format="HH:mm"
@@ -231,8 +232,9 @@ export default {
       getTimetablespecialsGet({ id: this.$route.query.id }).then((res) => {
         // this.value[0] =Number( res.body.settingTime);
         // this.value[1] = Number(res.body.finishTime) ;
-        this.subForm.videoId = res.body.videoId;
-        this.subForm.libraryId = res.body.libraryId;
+        res.body.video.remarks=='视频已被删除'? this.subForm.videoId='':   this.subForm.videoId = res.body.videoId;
+         this.subForm.synopsis = res.body.synopsis;
+         console.log(res.body.settingTime);
         this.$set(this.value, 0, res.body.settingTime);
         this.$set(this.value, 1, res.body.finishTime);
       });
@@ -249,7 +251,8 @@ export default {
     },
 
     beginDataChange(times) {
-      getTimeToDetermines({
+      if(this.$route.query.act=='a2'){
+ getTimeToDetermines({
         settingTime: this.value[0],
         finishTime: this.value[1],
         pid: this.$route.query.pid,
@@ -263,6 +266,24 @@ export default {
           this.subForm.finishTime = this.value[1];
         }
       });
+      }else{
+         getTimeToDetermines({
+        settingTime: this.value[0],
+        finishTime: this.value[1],
+        pid: this.$route.query.pid,
+        id:this.$route.query.id,
+      }).then((res) => {
+        if (res.body == "1") {
+          this.$message.error("这个时间段已经被占用了！");
+          this.$set(this.value, 0, this.$route.query.settingTime);
+          this.$set(this.value, 1, this.$route.query.settingTime);
+        } else {
+          this.subForm.settingTime = this.value[0];
+          this.subForm.finishTime = this.value[1];
+        }
+      });
+      }
+     
       // if (this.$route.query.id) {
       //   this.dateEnd = {
       //     disabledDate(time) {
@@ -284,7 +305,7 @@ export default {
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.subForm.settingTime == this.subForm.finishTime) {
+          if (this.$route.query.act=='a2'&&this.value[0] == this.value[1]) {
             this.$message({
               showClose: true,
               message: "结束时间不能小于或等于开始时间！",

@@ -101,18 +101,18 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/books/bookManagement',
     meta: {
-      title: '门店管理', icon: 'el-icon-picture-outline-round', 
+      title: '门店管理', icon: 'el-icon-s-shop', 
     },
     children:[
       {
         path:'bookManagement',
         component:()=>import('@/views/books/bookManagement/index'),
-        meta: { title: '门店管理', icon: 'el-icon-picture-outline-round' },
+        meta: { title: '门店管理', icon: 'el-icon-s-shop' },
       },
       {
         path:'bookManagement/detail',
         component:()=>import('@/views/books/bookManagement/detail'),
-        meta: { title: '详情', icon: 'el-icon-picture-outline-round' },
+        meta: { title: '详情', icon: 'el-icon-s-shop' },
         hidden: true
       },
       // {
@@ -145,7 +145,7 @@ export const asyncRouterMap = [
       {
         path:'commonly/list',
         component:()=>import('@/views/curriculum/commonly/list'),
-        meta: { title: '新增', icon: 'el-icon-s-order' },
+        meta: { title: '列表', icon: 'el-icon-s-order' },
         hidden: true
       },
       {
@@ -162,7 +162,7 @@ export const asyncRouterMap = [
       {
         path:'special/list',
         component:()=>import('@/views/curriculum/special/list'),
-        meta: { title: '新增', icon: 'el-icon-s-order' },
+        meta: { title: '列表', icon: 'el-icon-s-order' },
         hidden: true
       },
       {
@@ -220,41 +220,41 @@ export const asyncRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/index',
-    meta: { title: '账号管理', icon: 'el-icon-coin' },
+    meta: { title: '账号管理', icon: 'el-icon-user' },
     children: [
       {
         path: 'index',
         component: () => import('@/views/user/index'),
-        meta: { title: '用户管理', icon: 'el-icon-coin' },
+        meta: { title: '用户管理', icon: 'el-icon-user' },
       },
       {
         path: 'detail',
         component: () => import('@/views/user/detail'),
-        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/index' },
+        meta: { title: '详情', icon: 'el-icon-user', activeMenu: '/user/index' },
         hidden: true
       },
 
       {
         path: 'appeal',
         component: () => import('@/views/user/appeal/index'),
-        meta: { title: '申诉管理', icon: 'el-icon-coin' },
+        meta: { title: '申诉管理', icon: 'el-icon-user' },
       },
       {
         path: 'appeal/detail',
         component: () => import('@/views/user/appeal/detail'),
-        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/appeal' },
+        meta: { title: '详情', icon: 'el-icon-user', activeMenu: '/user/appeal' },
         hidden: true
 
       },
       {
         path: 'train',
         component: () => import('@/views/user/train/index'),
-        meta: { title: '训练管理', icon: 'el-icon-coin' },
+        meta: { title: '训练管理', icon: 'el-icon-user' },
       },
       {
         path: 'train/detail',
         component: () => import('@/views/user/train/detail'),
-        meta: { title: '详情', icon: 'el-icon-coin', activeMenu: '/user/appeal' },
+        meta: { title: '详情', icon: 'el-icon-user', activeMenu: '/user/appeal' },
         hidden: true
 
       },
@@ -296,13 +296,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/permission/adminuser',
     meta: {
-      title: '权限管理', icon: 'el-icon-user', 
+      title: '权限管理', icon: 'el-icon-setting', 
     },
     children: [
       {
         path: 'adminuser',
         component: () => import('@/views/permission/adminuser/index'),
-        meta: { title: '管理员', icon: 'el-icon-user',  }
+        meta: { title: '管理员', icon: 'el-icon-setting',  }
       },
       {
         path: 'adminuser/detail',
@@ -313,7 +313,7 @@ export const asyncRouterMap = [
       {
         path: 'role',
         component: () => import('@/views/permission/role/index'),
-        meta: { title: '角色管理', icon: 'el-icon-user',}
+        meta: { title: '角色管理', icon: 'el-icon-setting',}
       },
       {
         path: 'role/detail',

@@ -132,6 +132,13 @@ import request from '@/utils/request'
                     params
                 })
             }
+            export function passTrain(params) {
+                return request({
+                    url: `/admin/traininglogss/passTrain/${params.id}`,
+                    method: 'post',
+                    params
+                })
+            }
             export function mycenterGetLoginUser(params) {
                 return request({
                     url: `/admin/mycenter/getLoginUser`,
@@ -798,7 +805,7 @@ import request from '@/utils/request'
             export function traininglogssDisableTrainDeputy(params) {
                 return request({
                     url: `/admin/traininglogss/disableTrainDeputy/${params.id}`,
-                    method: 'get',
+                    method: 'post',
                     params
                 })
             }
@@ -806,7 +813,7 @@ import request from '@/utils/request'
             export function traininglogssEnableTrainDeputy(params) {
                 return request({
                     url: `/admin/traininglogss/enableTrainDeputy/${params.id}`,
-                    method: 'get',
+                    method: 'post',
                     params
                 })
             }

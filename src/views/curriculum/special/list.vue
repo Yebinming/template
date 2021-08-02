@@ -70,7 +70,7 @@
             @click="
               $router.push({
                 path: '/curriculum/special/detail',
-                query: {settingTime: scope.row.settingTime, id: scope.row.id,pid:$route.query.id,act:'2' }
+                query: {settingTime:$route.query.settingTime, id: scope.row.id,pid:$route.query.id,act:'2' }
               })
             "
           >

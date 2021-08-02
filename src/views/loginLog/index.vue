@@ -45,12 +45,12 @@
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column label="用户名">
+      <el-table-column label="用户地址">
         <template slot-scope="scope">
-          {{ scope.row.user.logAddresses }}
+          {{ scope.row.addresses }}
         </template>
       </el-table-column>
-      <el-table-column label="修改记录">
+      <el-table-column label="修改操作">
         <template slot-scope="scope">
           {{ scope.row.behavior }}
         </template>

@@ -71,7 +71,7 @@
             @click="
               $router.push({
                 path: '/curriculum/commonly/detail',
-                query: {id:scope.row.id ,act:'2',pid:$route.query.id}
+                query: {id:scope.row.id ,act:'2',pid:$route.query.id,settingTime:$route.query.settingTime}
               })
             "
           >

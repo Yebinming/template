@@ -1,26 +1,24 @@
 <template>
   <div class="app-container">
     <div class="mb20">
-                  <el-input
-    class=""
-      style="width: 180px"
-      v-model="page.userName"
-      placeholder="请输入用户名"
-      @input="fetchData()"
-    ></el-input>
+      <el-input
+        class=""
+        style="width: 180px"
+        v-model="page.userName"
+        placeholder="请输入用户名"
+        @input="fetchData()"
+      ></el-input>
 
-            <el-button
+      <el-button
         type="primary"
         size="small"
         class="ml10"
         @click="store.visible = true"
         >门店启用/禁用训练模式</el-button
       >
-
     </div>
     <el-tabs v-model="active" tab-position="top">
       <el-tab-pane label="全部" name="all">
-
         <el-table
           :data="list"
           element-loading-text="Loading"
@@ -76,27 +74,27 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="训练模式">
+          <el-table-column label="训练模式" class="isTrain">
             <template slot-scope="scope">
-              <el-tag effect="plain" :type="scope.row.isTrain | isTrainType">
-                {{ scope.row.isTrain | isTrain }}
+              <el-tag effect="plain" :type="scope.row.isTrain | isTrainType(scope.row.isTabooTrain)">
+                {{ scope.row.isTrain | isTrain(scope.row.isTabooTrain) }}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="禁用原因">
             <template slot-scope="scope">
-                {{ scope.row.trainText }}
+              {{ scope.row.trainText }}
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <div>
                 <el-button
-                  :type="scope.row.isTrain != 2 ? 'primary' : 'info'"
+                  :type="scope.row.isTabooTrain != 0 ? 'primary' : 'info'"
                   size="small"
-                  @click="trainStatusChange(scope.row.isTrain, scope.row.id)"
+                  @click="trainStatusChange(scope.row.isTabooTrain, scope.row.id)"
                   >{{
-                    (scope.row.isTrain != 2 ? "开启" : "关闭") + "训练模式"
+                    (scope.row.isTabooTrain != 0 ? "启用" : "禁用") + "训练模式"
                   }}</el-button
                 >
               </div>
@@ -193,13 +191,12 @@
       >
       </el-pagination>
     </div>
-        <el-dialog
+    <el-dialog
       title="按门店禁用/启用"
       :visible.sync="store.visible"
       width="30%"
     >
       <span>
-          
         <el-select
           v-model="store.id"
           placeholder="请选择门店"
@@ -220,13 +217,17 @@
           <el-radio :label="$const.ENABLED"> 启用 </el-radio>
         </el-radio-group>
       </span>
-      <el-input v-model="store.trainText" v-if="store.type == $const.DISABLED" class="mt20" placeholder="请输入禁用原因"></el-input>
+      <el-input
+        v-model="store.trainText"
+        v-if="store.type == $const.DISABLED"
+        class="mt20"
+        placeholder="请输入禁用原因"
+      ></el-input>
       <span slot="footer">
         <el-button @click="store.visible = false">取消</el-button>
         <el-button type="primary" @click="handleDisAndEna">确定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -241,6 +242,7 @@ import {
   userDisable,
   traininglogssDisableTrain,
   traininglogssEnableTrain,
+  passTrain,
   traininglogssTurnTrain,
   traininglogssParentList,
   traininglogssDisableTrainDeputy,
@@ -252,11 +254,11 @@ export default {
   data() {
     return {
       options: [],
-            store: {
+      store: {
         visible: false,
         type: this.$const.DISABLED,
         id: "",
-        trainText: ""
+        trainText: "",
       },
 
       active: "audit",
@@ -280,10 +282,11 @@ export default {
     };
   },
   created() {
-        librarysLists().then((res) => {
+    this.active = this.$route.query.active || "audit";
+
+    librarysLists().then((res) => {
       this.options = res.body;
     });
-
 
     this.fetchData();
   },
@@ -291,7 +294,7 @@ export default {
     ...mapGetters(["id"]),
   },
   methods: {
-        handleDisAndEna() {
+    handleDisAndEna() {
       if (!this.store.id) {
         this.$message({
           message: "请选择门店",
@@ -324,7 +327,7 @@ export default {
     },
 
     adopt(id) {
-      traininglogssEnableTrain({
+       passTrain({
         id,
       }).then((res) => {
         this.$message.success("成功");
@@ -362,8 +365,8 @@ export default {
         this.list = res.body.rows;
       });
     },
-        trainStatusChange(val, id) {
-      val != this.$const.ADOPT
+    trainStatusChange(val, id) {
+      val != '0'
         ? traininglogssEnableTrain({ id }).then((res) => {
             this.$message({
               message: "成功",
@@ -386,7 +389,6 @@ export default {
             });
           });
     },
-
   },
   watch: {
     active(val) {
@@ -408,6 +410,15 @@ export default {
               isTrain: 1,
               totalCount: 0,
             });
+
+      window.location.href =
+        window.location.href.split("?")[0] +
+        "?" +
+        this.$utils.objectToUrlParams({
+          ...this.$route.query,
+          active: val,
+        });
+
       this.fetchData();
     },
   },
