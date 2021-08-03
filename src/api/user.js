@@ -20,7 +20,7 @@ export function getLoginUser() {
 
 export function logout() {
   return request({
-    url: '/base/login/portal/logout',
+    url: '/base/login/admin/logout',
     method: 'post'
   })
 }
