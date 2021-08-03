@@ -27,6 +27,16 @@
           {{ scope.row.videoName }}
         </template>
       </el-table-column>
+       <el-table-column label="广告封面">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="scope.row.coverImg"
+            :preview-src-list="[scope.row.coverImg]"
+          >
+          </el-image>
+        </template>
+      </el-table-column>
         <el-table-column label="广告地址">
         <template slot-scope="scope">
          <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.videoAddresses)">{{ scope.row.videoAddresses }}</span> 

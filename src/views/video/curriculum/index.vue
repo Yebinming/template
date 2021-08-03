@@ -1,13 +1,17 @@
 <template>
   <div class="app-container">
-    <el-header style="padding:0">
+    <el-header style="padding: 0">
       <div class="topright flex flex-x-end">
-        <el-button type="primary" style="width: 114px" @click="$router.push({ path:$route.path + '/detail'})">
+        <el-button
+          type="primary"
+          style="width: 114px"
+          @click="$router.push({ path: $route.path + '/detail' })"
+        >
           添加
         </el-button>
       </div>
     </el-header>
-       <!-- <el-tabs
+    <!-- <el-tabs
         v-model="activeName"
         @tab-click="handleClick"
       >
@@ -22,17 +26,31 @@
       fit
       highlight-current-row
     >
-        <el-table-column label="名称">
+      <el-table-column label="名称">
         <template slot-scope="scope">
           {{ scope.row.videoName }}
         </template>
       </el-table-column>
-        <el-table-column label="地址">
+      <el-table-column label="视频封面">
         <template slot-scope="scope">
-           <span style=" cursor: pointer; color:#004BFF" @click="open(scope.row.videoAddresses)">{{ scope.row.videoAddresses }}</span> 
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="scope.row.coverImg"
+            :preview-src-list="[scope.row.coverImg]"
+          >
+          </el-image>
         </template>
       </el-table-column>
-        <!-- <el-table-column label="时长(/秒)">
+      <el-table-column label="地址">
+        <template slot-scope="scope">
+          <span
+            style="cursor: pointer; color: #004bff"
+            @click="open(scope.row.videoAddresses)"
+            >{{ scope.row.videoAddresses }}</span
+          >
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="时长(/秒)">
         <template slot-scope="scope">
           {{ scope.row.videoTokinaga }}
         </template>
@@ -42,27 +60,37 @@
           {{ scope.row.createTime | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
-       <el-table-column label="视频标题">
+      <el-table-column label="视频标题">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
+
       <el-table-column label="视频简介">
         <template slot-scope="scope">
           {{ scope.row.introduction }}
         </template>
       </el-table-column>
-     
+
       <el-table-column label="类型">
         <template slot-scope="scope">
-          {{ scope.row.type=='VIDEO'?'视频':'广告' }}
+          {{ scope.row.type == "VIDEO" ? "视频" : "广告" }}
         </template>
       </el-table-column>
-    
+
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button    type="primary" size="small" @click="$router.push({ path:$route.path + '/detail', query: { id: scope.row.id } })">
-             修改
+          <el-button
+            type="primary"
+            size="small"
+            @click="
+              $router.push({
+                path: $route.path + '/detail',
+                query: { id: scope.row.id },
+              })
+            "
+          >
+            修改
           </el-button>
           <el-popconfirm
             confirm-button-text="确定"
@@ -77,24 +105,26 @@
         </template>
       </el-table-column>
     </el-table>
-           <div class="mt20 flex flex-x-center">
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :page-size="page.pageSize"
-            layout=" prev, pager, next "
-            :total="page.totalCount"
-          >
-          </el-pagination>
-        </div>
+    <div class="mt20 flex flex-x-center">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :page-size="page.pageSize"
+        layout=" prev, pager, next "
+        :total="page.totalCount"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import {videosCreate,
-videosDelete,
-videosDetail,
-videosList,
-videosUpdate } from '@/api/api';
+import {
+  videosCreate,
+  videosDelete,
+  videosDetail,
+  videosList,
+  videosUpdate,
+} from "@/api/api";
 export default {
   data() {
     return {
@@ -104,7 +134,7 @@ export default {
         pageNum: 0,
         pageSize: 50,
         totalCount: 0,
-        type:'VIDEO'
+        type: "VIDEO",
       },
     };
   },
@@ -112,7 +142,7 @@ export default {
     this.fetchData();
   },
   methods: {
-       handleCurrentChange(val) {
+    handleCurrentChange(val) {
       this.page.pageNum = --val;
       this.fetchData();
     },
@@ -122,9 +152,9 @@ export default {
         this.fetchData();
       });
     },
- open(url){
-       window.open(url)
-    }, 
+    open(url) {
+      window.open(url);
+    },
     fetchData() {
       this.listLoading = true;
       videosList(this.page).then((res) => {
@@ -134,6 +164,5 @@ export default {
       });
     },
   },
-
 };
 </script>

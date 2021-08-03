@@ -20,7 +20,7 @@
         :rules="subRules"
         label-width="180px"
       >
-        <el-row >
+        <el-row>
           <el-col :span="7">
             <el-form-item label="请上传视频：">
               <el-upload
@@ -36,7 +36,8 @@
                 :before-upload="beforeAvatarAUDIO"
                 :on-success="handleVideoSuccess"
               >
-                <el-button  size="small" type="primary">点击上传</el-button><span style="white-space:nowrap;">(只能上传一个)</span>
+                <el-button size="small" type="primary">点击上传</el-button
+                ><span style="white-space: nowrap">(只能上传一个)</span>
               </el-upload>
             </el-form-item>
 
@@ -64,12 +65,28 @@
                 placeholder="请输入"
               />
             </el-form-item> -->
-           
+
             <el-form-item label="视频标题：" prop="remarks">
               <el-input v-model="subForm.remarks" placeholder="请输入" />
             </el-form-item>
             <el-form-item label="视频简介：" prop="introduction">
               <el-input v-model="subForm.introduction" placeholder="请输入" />
+            </el-form-item>
+            <el-form-item label="封面图片：" prop="coverImg">
+              <el-upload
+                class="avatar-uploader"
+                :action="$api.uploadFileUrl"
+                :show-file-list="false"
+                name="upfile"
+                :on-success="onUploadImgSuccessImg"
+              >
+                <img
+                  v-if="subForm.coverImg"
+                  :src="subForm.coverImg"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
@@ -96,7 +113,7 @@ export default {
   data() {
     return {
       fileList: [],
-      ban:false,
+      ban: false,
       subForm: {
         videoName: "",
         videoAddresses: "",
@@ -104,8 +121,16 @@ export default {
         type: "VIDEO",
         remarks: "",
         introduction: "",
+        coverImg: "",
       },
       subRules: {
+        coverImg: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
         videoName: [
           {
             required: true,
@@ -160,26 +185,26 @@ export default {
   },
   mounted() {
     if (this.$route.query.id) {
-        this.ban=true
+      this.ban = true;
       videosDetail({ id: this.$route.query.id }).then((res) => {
         this.subForm = res.body;
-        this.fileList 
-       = [{
-            'status': "success",
-            'name': res.body.videoName,
-            'size': "175397",
-            'percentage': "100",
-            'raw': {
-              'type': res.body.type,
+        this.fileList = [
+          {
+            status: "success",
+            name: res.body.videoName,
+            size: "175397",
+            percentage: "100",
+            raw: {
+              type: res.body.type,
             },
-            'response': {
-              'state': "SUCCESS",
-              'url': res.body.videoAddresses,
-              'title': null,
-              'original': null,
+            response: {
+              state: "SUCCESS",
+              url: res.body.videoAddresses,
+              title: null,
+              original: null,
             },
-          }];
-       
+          },
+        ];
       });
     }
   },
@@ -189,46 +214,48 @@ export default {
       this.fileList = fileList;
       console.log(fileList);
     },
-    handleVideoSuccess(file, fileList){
+    onUploadImgSuccessImg(res, file) {
+      this.subForm.coverImg = res.body;
+      console.log();
+    },
+    handleVideoSuccess(file, fileList) {
       console.log(file, fileList);
     },
-     getCaption(obj){
-        var index=obj.lastIndexOf("\.");
-        obj=obj.substring(0, index);
-    //  console.log(obj);
-        return obj;
+    getCaption(obj) {
+      var index = obj.lastIndexOf(".");
+      obj = obj.substring(0, index);
+      //  console.log(obj);
+      return obj;
     },
-    beforeAvatarAUDIO(file){
+    beforeAvatarAUDIO(file) {
       // console.log(this.getCaption(file.name) );
-    this.subForm.videoName =this.getCaption(file.name)
-    let _this=this
-　　let url = URL.createObjectURL(file)
-    var audioElement = new Audio(url)
-    audioElement.addEventListener('loadedmetadata',function(){
-　　let playTime = audioElement.duration; //playTime就是当前视频长度
-    console.log(playTime);
-   _this.subForm.videoTokinaga= Math.round(playTime)
-   })
-},
+      this.subForm.videoName = this.getCaption(file.name);
+      let _this = this;
+      let url = URL.createObjectURL(file);
+      var audioElement = new Audio(url);
+      audioElement.addEventListener("loadedmetadata", function () {
+        let playTime = audioElement.duration; //playTime就是当前视频长度
+        console.log(playTime);
+        _this.subForm.videoTokinaga = Math.round(playTime);
+      });
+    },
 
     beforeRemove(file, fileList) {
-    
       //  console.log(fileList)
       this.fileList = fileList;
-  
     },
- 
+
     onBit(formName) {
-    if(this.fileList.length>0){
-            this.subForm.videoAddresses = this.fileList[0].response.url;
-        }else{
+      if (this.fileList.length > 0) {
+        this.subForm.videoAddresses = this.fileList[0].response.url;
+      } else {
         this.$message({
-          message: '还没上传视频哦',
-          type: 'warning'
+          message: "还没上传视频哦",
+          type: "warning",
         });
-        return
-        }
-    //   this.subForm.videoTokinaga = this.fileList[0].size;
+        return;
+      }
+      //   this.subForm.videoTokinaga = this.fileList[0].size;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.subForm.id) {
@@ -254,5 +281,8 @@ export default {
 <style lang="scss" scoped>
 .right_cont {
   margin-top: 50px;
+}
+.avatar {
+  width: 200px;
 }
 </style>

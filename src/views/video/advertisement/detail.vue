@@ -70,6 +70,25 @@
             <el-form-item label="广告简介" prop="introduction">
               <el-input v-model="subForm.introduction" placeholder="请输入" />
             </el-form-item>
+                  <el-form-item
+              label="封面图片："
+              prop="coverImg"
+            >
+              <el-upload
+                class="avatar-uploader"
+                :action="$api.uploadFileUrl"
+                :show-file-list="false"
+                name="upfile"
+                :on-success="onUploadImgSuccessImg"
+              >
+                <img
+                  v-if="subForm.coverImg"
+                  :src="subForm.coverImg"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </el-form-item>
           </el-col>
         </el-row>
 
@@ -103,8 +122,16 @@ export default {
         type: "ADVERT",
         remarks: "",
         introduction: "",
+         coverImg: "",
       },
       subRules: {
+        coverImg: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
         videoName: [
           {
             required: true,
@@ -187,6 +214,10 @@ export default {
       //   console.log(JSON.stringify(fileList));
       this.fileList = fileList;
     },
+     onUploadImgSuccessImg(res, file) {
+      this.subForm.coverImg = res.body;
+      console.log();
+    },
     getCaption(obj){
         var index=obj.lastIndexOf("\.");
         obj=obj.substring(0, index+1);
@@ -233,7 +264,7 @@ export default {
             });
           } else {
             videosCreate(this.subForm).then((res) => {
-              this.$message.success("修改成功");
+              this.$message.success("新增成功");
               this.$router.back();
             });
           }
@@ -249,5 +280,8 @@ export default {
 <style lang="scss" scoped>
 .right_cont {
   margin-top: 50px;
+}
+.avatar {
+  width: 200px;
 }
 </style>

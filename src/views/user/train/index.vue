@@ -81,11 +81,11 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="禁用原因">
+          <!-- <el-table-column label="禁用原因">
             <template slot-scope="scope">
               {{ scope.row.trainText }}
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="操作">
             <template slot-scope="scope">
               <div>
@@ -146,6 +146,11 @@
           <el-table-column label="门店">
             <template slot-scope="scope">
               {{ scope.row.library ? scope.row.library.libraryName : "" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="申请理由" >
+            <template slot-scope="scope">
+              {{ scope.row.trainText }}
             </template>
           </el-table-column>
           <el-table-column label="状态">
