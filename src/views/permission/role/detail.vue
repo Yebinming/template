@@ -24,7 +24,7 @@
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span @click="() => editShow(data)">{{ node.label }}</span>
             <span>
-              <el-button
+              <!-- <el-button
                 type="text"
                 size="mini"
                 @click="() => appendShow(data)"
@@ -37,13 +37,13 @@
                 @click="() => remove(node, data)"
               >
                 Delete
-              </el-button>
+              </el-button> -->
             </span>
           </span>
         </el-tree>
-        <el-button type="primary" class="mt20" size="mini" @click="appendShow"
+        <!-- <el-button type="primary" class="mt20" size="mini" @click="appendShow"
           >添加菜单</el-button
-        >
+        > -->
       </el-form-item>
       <el-form-item>
         <div class="fr">
@@ -54,7 +54,7 @@
         </div>
       </el-form-item>
     </el-form>
-    <el-dialog title="编辑权限" :visible.sync="permission.visible" width="30%">
+    <!-- <el-dialog title="编辑权限" :visible.sync="permission.visible" width="30%">
       <el-form
         :model="permission"
         ref="form"
@@ -73,7 +73,7 @@
         <el-button @click="permission.visible = false">Cancel</el-button>
         <el-button type="primary" @click="exec">OK</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
