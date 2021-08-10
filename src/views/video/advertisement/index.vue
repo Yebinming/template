@@ -111,7 +111,7 @@ export default {
       list: [],
       page: {
         pageNum: 0,
-        pageSize: 50,
+        pageSize: 10,
         totalCount: 0,
         type:'ADVERT'
       },

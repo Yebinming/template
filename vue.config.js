@@ -24,8 +24,8 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-   runtimeCompiler: true,
-  publicPath: '/admin/plates/',
+  runtimeCompiler: true,
+  publicPath: '/web/plates/',
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',

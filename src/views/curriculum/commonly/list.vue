@@ -124,7 +124,7 @@ export default {
       page: {
         pid:this.$route.query.id,
         pageNum: 0,
-        pageSize: 50,
+        pageSize:10,
         totalCount: 0,
       },
     };
