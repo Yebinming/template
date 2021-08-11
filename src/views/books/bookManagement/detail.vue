@@ -38,11 +38,18 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="门店地址：" prop="addresses">
-              <el-input
+              <!-- <el-input
             
                 v-model="subForm.addresses"
                 placeholder="请输入"
-              />
+              /> -->
+              <el-cascader
+              :options="options"
+                v-model="selectedOptions"
+                @change="handleChange"
+                :separator="' '"
+          >
+      </el-cascader>
             </el-form-item>
             <el-form-item label="简介：" prop="introduction">
               <el-input
@@ -71,17 +78,21 @@
 </template>
 
 <script>
+import options from './country-data.js'
 import {librarysDetail,
 librarysUpdate,librarysCreate
  } from "@/api/api";
 export default {
   data() {
     return {
+       selectedOptions: [],//存放默认值
+      options:options ,  //存放城市数据
       subForm: {
       libraryName:'',
       libraryImg:'',
       addresses:'',
-      introduction:''
+      introduction:'',
+     
       },
       subRules: {
         libraryName: [
@@ -119,6 +130,7 @@ export default {
     if (this.$route.query.id) {
       librarysDetail({ id: this.$route.query.id }).then((res) => {
         this.subForm = res.body;
+         this.selectedOptions= res.body.addresses.split(',')
       });
     }
   },
@@ -127,6 +139,11 @@ export default {
       this.subForm.libraryImg = res.body;
       console.log();
     },
+     handleChange(value) {
+        console.log(value);
+        this.subForm.addresses=value.join(",");
+        // console.log( this.subForm.addresses)
+      },
     onBit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
