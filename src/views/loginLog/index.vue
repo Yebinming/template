@@ -19,7 +19,6 @@
     
     </el-header>
     <el-table
-      v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
       border
@@ -120,6 +119,9 @@ export default {
     UserAlllist().then(res=>{
       this.options=res.body
     })
+  },
+   mounted(){
+    setInterval(this.fetchData,5000)
   },
   methods: {
     handleCurrentChange(val) {

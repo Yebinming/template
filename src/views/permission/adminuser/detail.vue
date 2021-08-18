@@ -1,6 +1,9 @@
 <template>
   <div class="app-container narrow">
     <el-form ref="regForm" :model="form" :rules="rules" label-width="130px">
+      <el-form-item label="电话" prop="adminPhone">
+        <el-input type='number' v-model.number="form.adminPhone" placeholder="请输入名称" />
+      </el-form-item>
       <el-form-item label="名称" prop="userName">
         <el-input v-model="form.userName" placeholder="请输入名称" />
       </el-form-item>
@@ -68,6 +71,13 @@ export default {
       placeholder: this.$route.query.id ? "●●●●●●" : "请输入密码",
       rules: {
         userName: [
+          {
+            required: true,
+            message: "请输入名称",
+            trigger: ["blur", "change"],
+          },
+        ],
+        adminPhone: [
           {
             required: true,
             message: "请输入名称",

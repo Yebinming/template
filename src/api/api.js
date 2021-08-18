@@ -1,4 +1,19 @@
 import request from '@/utils/request'
+import { sha256_digest } from "@/utils/index";
+
+            export function userCreate(data) {
+                return request({
+                    url: `/admin/user/create`,
+                    method: 'post',
+                    data: {
+                        password:sha256_digest(data.password),
+                        loginPhone:data.loginPhone,
+                        headerImg:data.headerImg,
+                        userName:data.userName,
+                        libraryId:data.libraryId,
+                      }
+                })
+            }
             export function adminuserCreate(data) {
                 return request({
                     url: `/admin/adminuser/create`,
@@ -813,6 +828,41 @@ import request from '@/utils/request'
             export function traininglogssEnableTrainDeputy(params) {
                 return request({
                     url: `/admin/traininglogss/enableTrainDeputy/${params.id}`,
+                    method: 'post',
+                    params
+                })
+            }
+            export function TimetableBackupsCreate(params) {
+                return request({
+                    url: `/admin/TimetableBackups/create`,
+                    method: 'post',
+                    params
+                })
+            }
+            export function TimetableBackupsDelete(params) {
+                return request({
+                    url: `/admin/TimetableBackups/delete/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function TimetableBackupsDetail(params) {
+                return request({
+                    url: `/admin/TimetableBackups/detail/${params.id}`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function TimetableBackupslList(params) {
+                return request({
+                    url: `/admin/TimetableBackups/list`,
+                    method: 'get',
+                    params
+                })
+            }
+            export function TimetableBackupslUpdate(params) {
+                return request({
+                    url: `/admin/TimetableBackups/update/${params.id}`,
                     method: 'post',
                     params
                 })

@@ -131,7 +131,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/curriculum/commonly',
     meta: {
-      title: '课程管理', icon: 'el-icon-s-order',role:['commonly','special']  
+      title: '课程管理', icon: 'el-icon-s-order',role:['commonly','special','spareCurriculum']  
     },
     children: [
       {
@@ -168,6 +168,17 @@ export const asyncRouterMap = [
         meta: { title: '详情', icon: 'el-icon-s-order' },
         hidden: true
       },
+      {
+        path:'spareCurriculum',
+        component:()=>import('@/views/curriculum/spareCurriculum/index'),
+        meta: { title: '备用课程', icon: 'el-icon-s-order',role:['spareCurriculum'] },
+      },
+      {
+        path:'spareCurriculum/detail',
+        component:()=>import('@/views/curriculum/spareCurriculum/detail'),
+        meta: { title: '详情', icon: 'el-icon-s-order' },
+        hidden: true
+      },
     ]
   },
   {
@@ -200,6 +211,7 @@ export const asyncRouterMap = [
         meta: { title: '详情', icon: 'el-icon-video-camera' },
         hidden: true
       },
+     
       // {
       //   path:'journal',
       //   component:()=>import('@/views/video/journal/index'),

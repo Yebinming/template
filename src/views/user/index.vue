@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div class="from_worp font">
+      <div>
       <el-input
         style="width: 180px"
         v-model="page.userName"
@@ -40,6 +41,11 @@
         >
         </el-switch>
       </span>
+      </div>
+       <el-button type="primary" style="width: 114px" @click="$router.push({ path: '/user/detail'})">
+          添加
+        </el-button>
+        
     </div>
     <el-table
       :data="list"
@@ -251,8 +257,12 @@ export default {
 
     this.fetchData();
   },
+  mounted(){
+    setInterval(this.fetchData,5000)
+  },
   watch: {},
   methods: {
+ 
     errIgnore(id) {
       userErrIgnore({ id }).then((res) => {
         this.$message({
@@ -341,6 +351,7 @@ export default {
     indexMethod(index) {
       return index + 1 + this.page.page * this.page.limit;
     },
+   
     fetchData() {
       let data = { ...this.page };
       data.lognErr ? (data.lognErr = 1) : delete data.lognErr;
@@ -363,6 +374,8 @@ export default {
 }
 .font {
   font-size: 14px;
+  display: flex;
+  justify-content: space-between;
 }
 .btns {
   margin-left: 20px;

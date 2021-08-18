@@ -128,6 +128,9 @@ export default {
   created() {
     this.fetchData();
   },
+   mounted(){
+    setInterval(this.fetchData,5000)
+  },
   computed: {
     ...mapGetters(["id"]),
   },
