@@ -70,6 +70,7 @@
               v-if="$route.query.act == '2' || $route.query.act == 'a2'"
             >
               <el-time-picker
+              :editable="false"
                 @change="beginDataChange"
                 is-range
                 v-model="value"

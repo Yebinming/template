@@ -79,6 +79,7 @@
               v-if="$route.query.act == '2' || $route.query.act == 'a2'"
             >
               <el-time-picker
+              :editable="false"
                 @blur="beginDataChange"
                 is-range
                 :clearable='false'
