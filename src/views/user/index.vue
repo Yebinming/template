@@ -43,7 +43,7 @@
       </span>
       </div>
        <el-button type="primary" style="width: 114px" @click="$router.push({ path: '/user/detail'})">
-          添加
+          新增用户
         </el-button>
         
     </div>

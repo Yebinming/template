@@ -16,7 +16,7 @@
      <el-button
           type="primary"
           style="width: 114px"
-          @click="$router.push({ path: '/curriculum/special/detail',query:{pid:$route.query.id,settingTime:$route.query.settingTime,act:'a2'}  })"
+          @click="$router.push({ path: '/curriculum/special/detail',query:{pid:$route.query.id,settingTime:$route.query.settingTime,act:'a2',libraryId:$route.query.libraryId}  })"
         >
           添加
         </el-button>

@@ -21,8 +21,8 @@
         label-width="180px"
       >
         <el-row>
-          <el-col :span="7">
-            <el-form-item label="请上传视频：">
+          <el-col :span="12">
+            <el-form-item label="请上传视频：" prop='videoAddresses'>
               <el-upload
                 accept=".mp3 ,.mp4 "
                 class="upload-demo"
@@ -37,7 +37,23 @@
                 :on-success="handleVideoSuccess"
               >
                 <el-button size="small" type="primary">点击上传</el-button
-                ><span style="white-space: nowrap">(只能上传一个)</span>
+                ><span style="white-space: nowrap">(中文版,只能上传一个)</span>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="请上传视频：" prop='englishUrl'>
+              <el-upload
+                accept=".mp3 ,.mp4 "
+                class="upload-demo"
+                :action="$api.uploadimage"
+                :limit="1"
+                multiple
+                :file-list="EngfileList"
+                name="upfile"
+                :on-success="handleVideoSuccessEng"
+                :before-remove="beforeRemoveEng"
+              >
+                <el-button size="small" type="primary">点击上传</el-button
+                ><span style="white-space: nowrap">(英文版,只能上传一个)</span>
               </el-upload>
             </el-form-item>
 
@@ -113,6 +129,7 @@ export default {
   data() {
     return {
       fileList: [],
+      EngfileList: [],
       ban: false,
       subForm: {
         videoName: "",
@@ -122,8 +139,16 @@ export default {
         remarks: "",
         introduction: "",
         coverImg: "",
+        englishUrl: "",
       },
       subRules: {
+        englishUrl: [
+          {
+            required: true,
+            message: "不能为空",
+            trigger: ["blur", "change"],
+          },
+        ],
         coverImg: [
           {
             required: true,
@@ -205,6 +230,26 @@ export default {
             },
           },
         ];
+        if (res.body.englishUrl) {
+          let arr = res.body.englishUrl.split(",");
+          console.log(arr);
+          this.EngfileList = [
+            {
+              status: "success",
+              name: arr[0],
+              percentage: "100",
+              raw: {
+                type: res.body.type,
+              },
+              response: {
+                state: "SUCCESS",
+                url: arr[1],
+                title: null,
+                original: null,
+              },
+            },
+          ];
+        }
       });
     }
   },
@@ -212,14 +257,15 @@ export default {
     handleChange(file, fileList) {
       //   console.log(JSON.stringify(fileList));
       this.fileList = fileList;
-      console.log(fileList);
     },
     onUploadImgSuccessImg(res, file) {
       this.subForm.coverImg = res.body;
-      console.log();
     },
     handleVideoSuccess(file, fileList) {
       console.log(file, fileList);
+    },
+    handleVideoSuccessEng(file, fileList) {
+      this.subForm.englishUrl = fileList.name + "," + fileList.response.url;
     },
     getCaption(obj) {
       var index = obj.lastIndexOf(".");
@@ -243,6 +289,11 @@ export default {
     beforeRemove(file, fileList) {
       //  console.log(fileList)
       this.fileList = fileList;
+    },
+    beforeRemoveEng(file, fileList) {
+      //  console.log(fileList)
+      this.EngfileList = fileList;
+      this.subForm.englishUrl = "";
     },
 
     onBit(formName) {

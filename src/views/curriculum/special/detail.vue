@@ -21,7 +21,7 @@
         label-width="180px"
       >
         <el-row :gutter="20">
-          <el-col :span="7">
+          <el-col :span="12">
             <el-form-item
               label="视频："
               prop="videoId"
@@ -343,6 +343,7 @@ export default {
                 this.$router.back();
               });
             } else {
+              this.subForm.libraryId=this.$route.query.libraryId
               timetablespecialsCreate(this.subForm).then((res) => {
                 this.$message.success("新增成功");
                 this.$router.back();

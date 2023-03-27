@@ -57,7 +57,7 @@
 
       <el-table-column label="操作" width="230">
         <template slot-scope="scope">
-          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { id: scope.row.id,settingTime:scope.row.settingTime } })">
+          <el-button    size="small" @click="$router.push({ path:$route.path + '/list', query: { id: scope.row.id,settingTime:scope.row.settingTime,libraryId:scope.row.libraryId } })">
              查看
           </el-button>
           <el-button

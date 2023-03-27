@@ -21,8 +21,8 @@
         label-width="180px"
       >
         <el-row :gutter="30">
-          <el-col :span="7">
-            <el-form-item label="请上传视频：" >
+          <el-col :span="12">
+            <el-form-item label="请上传视频：">
               <el-upload
                 accept=".mp3 ,.mp4 "
                 class="upload-demo"
@@ -35,7 +35,8 @@
                 :before-remove="beforeRemove"
                 :before-upload="beforeAvatarAUDIO"
               >
-                <el-button  size="small" type="primary">点击上传</el-button><span style="white-space:nowrap;">(只能上传一个)</span>
+                <el-button size="small" type="primary">点击上传</el-button
+                ><span style="white-space: nowrap">(只能上传一个)</span>
               </el-upload>
             </el-form-item>
 
@@ -50,7 +51,7 @@
                 placeholder="请输入"
               />
             </el-form-item> -->
-             <el-form-item label="视频名：" prop="videoName">
+            <el-form-item label="视频名：" prop="videoName">
               <el-input
                 v-model.number="subForm.videoName"
                 placeholder="请输入"
@@ -63,17 +64,14 @@
                 placeholder="请输入"
               />
             </el-form-item> -->
-           
+
             <el-form-item label="广告标题" prop="remarks">
               <el-input v-model="subForm.remarks" placeholder="请输入" />
             </el-form-item>
             <el-form-item label="广告简介" prop="introduction">
               <el-input v-model="subForm.introduction" placeholder="请输入" />
             </el-form-item>
-                  <el-form-item
-              label="封面图片："
-              prop="coverImg"
-            >
+            <el-form-item label="封面图片：" prop="coverImg">
               <el-upload
                 class="avatar-uploader"
                 :action="$api.uploadFileUrl"
@@ -114,7 +112,7 @@ export default {
   data() {
     return {
       fileList: [],
-      ban:false,
+      ban: false,
       subForm: {
         videoName: "",
         videoAddresses: "",
@@ -122,7 +120,7 @@ export default {
         type: "ADVERT",
         remarks: "",
         introduction: "",
-         coverImg: "",
+        coverImg: "",
       },
       subRules: {
         coverImg: [
@@ -186,26 +184,26 @@ export default {
   },
   mounted() {
     if (this.$route.query.id) {
-        this.ban=true
+      this.ban = true;
       videosDetail({ id: this.$route.query.id }).then((res) => {
         this.subForm = res.body;
-        this.fileList 
-       = [{
-            'status': "success",
-            'name': res.body.videoName,
-            'size': "175397",
-            'percentage': "100",
-            'raw': {
-              'type': res.body.type,
+        this.fileList = [
+          {
+            status: "success",
+            name: res.body.videoName,
+            size: "175397",
+            percentage: "100",
+            raw: {
+              type: res.body.type,
             },
-            'response': {
-              'state': "SUCCESS",
-              'url': res.body.videoAddresses,
-              'title': null,
-              'original': null,
+            response: {
+              state: "SUCCESS",
+              url: res.body.videoAddresses,
+              title: null,
+              original: null,
             },
-          }];
-       
+          },
+        ];
       });
     }
   },
@@ -214,27 +212,27 @@ export default {
       //   console.log(JSON.stringify(fileList));
       this.fileList = fileList;
     },
-     onUploadImgSuccessImg(res, file) {
+    onUploadImgSuccessImg(res, file) {
       this.subForm.coverImg = res.body;
       console.log();
     },
-    getCaption(obj){
-        var index=obj.lastIndexOf("\.");
-        obj=obj.substring(0, index+1);
-    //  console.log(obj);
-        return obj;
+    getCaption(obj) {
+      var index = obj.lastIndexOf(".");
+      obj = obj.substring(0, index + 1);
+      //  console.log(obj);
+      return obj;
     },
-    beforeAvatarAUDIO(file){
-    this.subForm.videoName =this.getCaption(file.name)
-    let _this=this
-　　let url = URL.createObjectURL(file)
-    var audioElement = new Audio(url)
-    audioElement.addEventListener('loadedmetadata',function(){
-　　let playTime = audioElement.duration; //playTime就是当前视频长度
-    console.log(playTime);
-   _this.subForm.videoTokinaga= Math.round(playTime)
-   })
-},
+    beforeAvatarAUDIO(file) {
+      this.subForm.videoName = this.getCaption(file.name);
+      let _this = this;
+      let url = URL.createObjectURL(file);
+      var audioElement = new Audio(url);
+      audioElement.addEventListener("loadedmetadata", function () {
+        let playTime = audioElement.duration; //playTime就是当前视频长度
+        console.log(playTime);
+        _this.subForm.videoTokinaga = Math.round(playTime);
+      });
+    },
 
     beforeRemove(file, fileList) {
       console.log(file);
@@ -244,17 +242,17 @@ export default {
       return;
     },
     onBit(formName) {
-        if(this.fileList.length>0){
-            this.subForm.videoAddresses = this.fileList[0].response.url;
-        }else{
+      if (this.fileList.length > 0) {
+        this.subForm.videoAddresses = this.fileList[0].response.url;
+      } else {
         this.$message({
-          message: '还没上传视频哦',
-          type: 'warning'
+          message: "还没上传视频哦",
+          type: "warning",
         });
-        return
-        }
-      
-    //   this.subForm.videoTokinaga = this.fileList[0].size;
+        return;
+      }
+
+      //   this.subForm.videoTokinaga = this.fileList[0].size;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.subForm.id) {

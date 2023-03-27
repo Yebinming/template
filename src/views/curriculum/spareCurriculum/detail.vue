@@ -21,7 +21,7 @@
         label-width="180px"
       >
         <el-row :gutter="30">
-          <el-col :span="7">
+          <el-col :span="12">
             <el-form-item label="视频简介" prop="synopsis">
               <el-input
                 v-model="subForm.synopsis"

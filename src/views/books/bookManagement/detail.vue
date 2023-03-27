@@ -21,7 +21,7 @@
         label-width="180px"
       >
         <el-row :gutter="20">
-          <el-col :span="7">
+          <el-col :span="12">
             <el-form-item label="门店名称：" prop="libraryName">
               <el-input v-model="subForm.libraryName" placeholder="请输入" />
             </el-form-item>
